@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+@await Html.PartialAsync("/Views/AdminLayout/HeadPartial.cshtml")
+
+<body>
+    @*PreLoader Start*@
+    @await Html.PartialAsync("/Views/AdminLayout/PreLoaderPartial.cshtml")
+    @*Preloader End*@
+    <div class="main-wrapper">
+        @*Navheader Start*@
+        @await Html.PartialAsync("/Views/AdminLayout/NavHeaderPartial.cshtml")
+        @*Navheader End*@
+
+        @*SideBar Start*@
+        @await Html.PartialAsync("/Views/AdminLayout/SideBarPartial.cshtml")
+        @*SideBar End*@
+
+        <div class="page-wrapper">
+
+            @RenderBody()
+
+
+        </div>
+    </div>
+
+
+    <script src="~/admindashboard/assets/js/jquery-3.6.0.min.js"></script>
+
+    <script src="~/admindashboard/assets/js/feather.min.js"></script>
+
+    <script src="~/admindashboard/assets/js/jquery.slimscroll.min.js"></script>
+
+    <script src="~/admindashboard/assets/js/jquery.dataTables.min.js"></script>
+    <script src="~/admindashboard/assets/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/admindashboard/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/admindashboard/assets/plugins/apexchart/apexcharts.min.js"></script>
+    <script src="~/admindashboard/assets/plugins/apexchart/chart-data.js"></script>
+
+    <script src="~/admindashboard/assets/js/script.js"></script>
+</body>
+</html>
+
