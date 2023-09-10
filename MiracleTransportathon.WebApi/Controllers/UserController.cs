@@ -21,7 +21,7 @@ namespace MiracleTransportathon.WebApi.Controllers
         [HttpGet]
         public IActionResult UserList() {
             var values=_userService.TGetAll();
-            var userDtos = _mapper.Map<List<UserAddDto>>(values);
+            var userDtos = _mapper.Map<List<UserListDto>>(values);
 
             return Ok(userDtos);
         }

@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Kullanıcılar";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: "/User/GetUserList", // GetUserList metodunun URL'sini güncelleyin
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    console.log(data);
+                    // JSON verilerini kullanarak DataTable oluşturma işlemi
+                    $('#userTable').DataTable({
+                        data: data, // JSON verileri doğrudan kullanın
+                        columns: [
+                            { data: "id" },
+                            { data: "name" }
+                            // Diğer sütunlar buraya eklenebilir
+                        ]
+                    });
+                },
+                error: function () {
+                    alert("Veri çekme hatası");
+                }
+            });
+           
+
+            $.ajax({
+                url: '/User/GetUserList', // Controller ve metot adını kullanarak uygun URL'yi oluşturun
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    // Hata durumunda burada işlem yapın
+                }
+            });
+        });
+
+    </script>
+
+}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">Kullanıcılar</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Data Tables</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Default Datatable</h4>
+                    <p class="card-text">
+                        This is the most basic example of the datatables with zero configuration. Use the <code>.datatable</code> class to initialize datatables.
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="userTable" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ad</th>
+                               
+                                    <!-- Diğer sütunlar burada gelir -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Veriler buraya eklenecek -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

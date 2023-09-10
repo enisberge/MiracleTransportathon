@@ -9,13 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<Context>();
-builder.Services.AddScoped<IUserDal,EfUserDal>();
-builder.Services.AddScoped<IUserService,UserManager>();
+builder.Services.AddScoped<IUserDal, EfUserDal>();
+builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IVehicleDal, EfVehicleDal>();
 builder.Services.AddScoped<IVehicleService, VehicleManager>();
 
 //builder.Services.AddScoped
 builder.Services.AddAutoMapper(typeof(Program));
+
+//apiyi dýþarýya açma
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("MiracleTransportathon", opts =>
+    {
+        opts.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,7 +41,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("MiracleTransportathon");
 app.UseAuthorization();
 
 app.MapControllers();

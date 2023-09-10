@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 @await Html.PartialAsync("/Views/AdminLayout/HeadPartial.cshtml")
-
+@await RenderSectionAsync("Styles", required: false)
 <body>
     @*PreLoader Start*@
     @await Html.PartialAsync("/Views/AdminLayout/PreLoaderPartial.cshtml")
@@ -27,23 +27,10 @@
 
         </div>
     </div>
-
-
-    <script src="~/admindashboard/assets/js/jquery-3.6.0.min.js"></script>
-
-    <script src="~/admindashboard/assets/js/feather.min.js"></script>
-
-    <script src="~/admindashboard/assets/js/jquery.slimscroll.min.js"></script>
-
-    <script src="~/admindashboard/assets/js/jquery.dataTables.min.js"></script>
-    <script src="~/admindashboard/assets/js/dataTables.bootstrap4.min.js"></script>
-
-    <script src="~/admindashboard/assets/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/admindashboard/assets/plugins/apexchart/apexcharts.min.js"></script>
-    <script src="~/admindashboard/assets/plugins/apexchart/chart-data.js"></script>
-
-    <script src="~/admindashboard/assets/js/script.js"></script>
+    @*Script Start*@
+    @await Html.PartialAsync("/Views/AdminLayout/ScriptPartial.cshtml")
+    @*Script End*@
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
 

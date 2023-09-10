@@ -25,5 +25,9 @@ namespace MiracleTransportathon.WebUI.Controllers
         {
             return PartialView();
         }
+        public PartialViewResult ScriptPartial()
+        {
+            return PartialView();
+        }
     }
 }

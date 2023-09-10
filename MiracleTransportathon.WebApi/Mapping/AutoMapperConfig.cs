@@ -13,6 +13,8 @@ namespace MiracleTransportathon.WebApi.Mapping
 
             CreateMap<UserUpdateDto, User>().ReverseMap();//reverse yapınca yukarıdakiyle aynı oluyor
             CreateMap<UserDeleteDto, User>().ReverseMap();//reverse yapınca yukarıdakiyle aynı oluyor
+            CreateMap<UserListDto, User>().ReverseMap();
+
 
         }
     }
