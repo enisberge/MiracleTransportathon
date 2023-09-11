@@ -29,5 +29,6 @@ namespace MiracleTransportathon.DtoLayer.Dtos.UserDto
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public int Status { get; set; }
+        public int Role { get; set; }
     }
 }

@@ -22,11 +22,12 @@
 
             $(".btn-added").click(function () {
                 $('#newUser').modal('show');
+                $(".modal-title").text("Kullanıcı Ekle");
                 $('.btnClose').off('click').on('click', function () {
 
 
                 });
-                $('.btnAdd').off('click').on('click', function () {
+                $('.btnSave').off('click').on('click', function () {
 
                     var Name = $("#name").val();
                     var Surname = $("#surname").val();
@@ -101,7 +102,115 @@
                 });
             });
 
+            $("#userTable tbody").on("click", "a.btnEdit", function () {
+                var id = parseInt($(this).attr("data-id"));
+                $('#editUser').modal('show');
+                $(".modal-title").text("Kullanıcı Güncelle");
+               
+                $.ajax({
+                    url: '/User/GetUserById/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.isSuccess) {
 
+                            $("#updatename").val(data.user.name);
+                            $("#updatesurname").val(data.user.surname);
+                            $("#updateemail").val(data.user.email);
+                            $("#updatephone").val(data.user.phoneNumber);
+                            $("#updateusername").val(data.user.username);
+                            $("#updatepassword").val(data.user.password);
+                            $("#updaterole").val(data.user.role);
+                            $("#updateaddress").val(data.user.address);
+                            data.user.status == 1 ? $('#updatestatus').prop('checked', true) : $('#updatestatus').prop('checked', false);
+
+                        } else {
+
+                            toastr.error("Veri alınamadı !");
+                        }
+                    },
+                    error: function () {
+                        // Hata durumunda işleme geçin
+                        toastr.error('İstek başarısız.');
+                    }
+                });
+
+                $('.btnUpdate').off('click').on('click', function () {
+
+                    var Name = $("#updatename").val();
+                    var Surname = $("#updatesurname").val();
+                    var Email = $("#updateemail").val();
+                    var PhoneNumber = $("#updatephone").val();
+                    var Username = $("#updateusername").val();
+                    var Password = $("#updatepassword").val();
+                    var Role =parseInt($("#updaterole").val());
+                    var Address = $("#updateaddress").val();
+                    var Status = $("#updatestatus").is(":checked") ? 1 : 0;
+                    var Id=id;
+
+
+                    if (Name.trim() === "") {
+                        toastr.error("Ad boş geçilemez !");
+                        return false;
+                    }
+                    if (Surname.trim() === "") {
+                        toastr.error("Soyad boş geçilemez !");
+                        return false;
+                    }
+                    if (Email.trim() === "") {
+                        toastr.error("E-posta boş geçilemez !");
+                        return false;
+                    }
+                    if (PhoneNumber.trim() === "") {
+                        toastr.error("Telefon boş geçilemez !");
+                        return false;
+                    }
+                    if (Username.trim() === "") {
+                        toastr.error("Kullanıcı adı boş geçilemez !");
+                        return false;
+                    }
+                    if (Password.trim() === "") {
+                        toastr.error("Parola boş geçilemez !");
+                        return false;
+                    }
+                    if (Role == 0 || Role == undefined) {
+                        toastr.error("Rol seçiniz !");
+                        return false;
+                    }
+
+                    var modelData = {Id, Name, Surname, Username, Email, PhoneNumber, Password, Role, Address, Status };
+                    $.ajax({
+                        type: 'POST',
+                        url: "/User/UpdateUser", // Controller ve Action adınıza göre ayarlayın
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(modelData),
+                        dataType: "json",
+                        success: function (result) {
+                            // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                            if (result.isSuccess) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Başarılı",
+                                    text: "Kullanıcı güncelleme işlemi başarıyla tamamlandı!",
+                                }).then(function () {
+                                    // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                    $('#editUser').modal('hide');
+                                    recordtable.ajax.reload();
+                                });
+                            } else {
+                                toastr.error("Hata : Kullanıcı ekleme işlemi başarısız !");
+                            }
+                        },
+                        error: function () {
+                            // Hata durumunda yapılacak işlemler
+                            toastr.error("Hata : Kullanıcı ekleme işlemi başarısız !");
+                        }
+                    });
+
+                });
+
+
+            });
             recordtable = $('#userTable').DataTable({
                 "ajax": {
                     "url": "/User/GetUserList", // Veri çekmek için kullanacağınız URL
@@ -109,7 +218,6 @@
                     "dataSrc": "" // Verilerinizi içeren JSON nesnesinin kökü (eğer JSON veri dizisi içinde ise boş bırakabilirsiniz)
                 },
                 "columns": [
-                    { "data": "id" }, // Veri sütunlarına karşılık gelen JSON özellikleri
                     { "data": "name" },
                     { "data": "surname" },
                     { "data": "email" },
@@ -128,7 +236,12 @@
                             return html;
                         }
                     },
-                    { "data": "createdDate" }
+                    { "data": "createdDate" },
+                    {
+                        "data": "id", className: "text-center text-nowrap", render: function (data, type, row) {
+                            return "<a href='javascript:;' class='btn btn-warning btn-sm btnEdit' data-toggle='tooltip' data-placement='left' title='Düzenle' data-id='" + data + "'><i class='fa fa-edit'></i></a>&nbsp;<a data-toggle='tooltip' data-placement='left' title='Sil' href='javascript:;' class='btn btn-danger btn-sm btnremove' data-id='" + data + "'><i class='fa fa-trash'></i></a>";
+                        }
+                    }
                 ]
             });
 
@@ -186,18 +299,12 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Default Datatable</h4>
-                    <p class="card-text">
-                        This is the most basic example of the datatables with zero configuration. Use the <code>.datatable</code> class to initialize datatables.
-                    </p>
-                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="userTable" class="table mb-0" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
+
                                     <th>Ad</th>
                                     <th>Soyad</th>
                                     <th>E-Posta</th>
@@ -206,6 +313,7 @@
                                     <th>Rol</th>
                                     <th>Durum</th>
                                     <th>Oluşturma Tarihi</th>
+                                    <th>İşlemler</th>
 
 
                                     <!-- Diğer sütunlar burada gelir -->
@@ -226,7 +334,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Ekle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row" style="margin:3px">
@@ -294,7 +402,86 @@
                 </div>
                 <div class="modal-footer" style="justify-content:end">
                     <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-primary btnAdd" id="type-error">Kaydet</button>
+                    <button type="button" class="btn btn-primary btnSave" id="type-error">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin:3px">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ad</label>
+                                <input type="text" id="updatename" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>E-Posta</label>
+                                <input type="text" id="updateemail" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Kullanıcı Adı</label>
+                                <input type="text" id="updateusername" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Soyad</label>
+                                <input type="text" id="updatesurname" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <input type="text" id="updatephone" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Parola</label>
+                                <input type="password" id="updatepassword" class="form-control">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Adresi</label>
+                                <textarea class="form-control" id="updateaddress" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rol</label>
+                                <select class="form-select" id="updaterole" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Kullanıcı</option>
+                                    <option value="2">Taşıyıcı</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Durum</label>
+                                <div class="form-check">
+
+                                    <input class="form-check-input" id="updatestatus" type="checkbox" value="">
+                                    <label class="form-check-label" for="status">
+                                        Aktif / Pasif
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content:end">
+                    <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary btnUpdate" id="type-error">Kaydet</button>
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ namespace MiracleTransportathon.BusinessLayer.Abstract
     public interface IUserService: IGenericService<User>
     {
         void DeleteUser(int id);
-      
+        void TUpdateUser(User user);
+
     }
 }

@@ -10,6 +10,6 @@ namespace MiracleTransportathon.DataAccesLayer.Abstract
     public interface IUserDal : IGenericDal<User>
     {
         void DeleteUser(int id);
-      
+        void UpdateUser(User user);
     }
 }

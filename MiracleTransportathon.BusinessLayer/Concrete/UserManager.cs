@@ -44,5 +44,10 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
         {
             _userDal.Update(entity);
         }
+
+        public void TUpdateUser(User user)
+        {
+            _userDal.UpdateUser(user);
+        }
     }
 }

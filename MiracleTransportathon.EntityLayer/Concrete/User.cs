@@ -17,7 +17,7 @@ namespace MiracleTransportathon.EntityLayer.Concrete
         public string PhoneNumber { get; set; }
         public string? Address { get; set; }
         public int Status { get; set; }
-        public int Role { get; set; } //kullanıcı veya taşıyıcı
+        public int Role { get; set; } 
         public DateTime CreatedDate { get; set; }
 
         // İlişki tanımlamaları

@@ -54,7 +54,7 @@ namespace MiracleTransportathon.WebApi.Controllers
                 return BadRequest();
             }
             var user = _mapper.Map<User>(userUpdateDto);
-            _userService.TUpdate(user);
+            _userService.TUpdateUser(user);
             return Ok("Başarıyla Güncellendi!");
         }
         [HttpGet("{id}")]

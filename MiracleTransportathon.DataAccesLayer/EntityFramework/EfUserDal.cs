@@ -24,6 +24,26 @@ namespace EnisBlog.DataAccessLayer.EntityFramework
             }
         }
 
-       
+        public void UpdateUser(User user)
+        {
+            var context = new Context();
+            var existingUser = context.Users.Find(user.Id);
+
+            if (existingUser != null)
+            {
+                // Değiştirilmesini istediğiniz sütunları atan
+                existingUser.Name = user.Name;
+                existingUser.Surname= user.Surname;
+                existingUser.Email = user.Email;
+                existingUser.Username= user.Username;
+                existingUser.Password= user.Password;
+                existingUser.Address= user.Address;
+                existingUser.Status= user.Status;
+                existingUser.PhoneNumber= user.PhoneNumber;
+                existingUser.Role= user.Role;
+
+                context.SaveChanges();
+            }
+        }
     }
 }
