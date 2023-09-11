@@ -16,6 +16,8 @@ namespace MiracleTransportathon.DtoLayer.Dtos.UserDto
         [Required(ErrorMessage = "Lütfen e-posta adresinizi girin.")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Lütfen kullanıcı adı girin.")]
+        public string Username { get; set; }
         [Required(ErrorMessage = "Lütfen parolanızı girin.")]
         [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "Parolanız en az 8 karakter uzunluğunda olmalıdır.")]
@@ -25,6 +27,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.UserDto
         [Required(ErrorMessage = "Lütfen telefon numaranızı girin.")]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        public int Status { get; set; }
         public int Role { get; set; } //kullanıcı veya taşıyıcı
         public DateTime CreatedDate { get; set; }
     }

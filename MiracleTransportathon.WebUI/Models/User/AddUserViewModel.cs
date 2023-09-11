@@ -1,8 +1,7 @@
 ﻿namespace MiracleTransportathon.WebUI.Models.User
 {
-    public class UserViewModel
+    public class AddUserViewModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Username { get; set; }
@@ -12,6 +11,6 @@
         public string? Address { get; set; }
         public int Status { get; set; }
         public int Role { get; set; } //kullanıcı, taşıyıcı,admin
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }= DateTime.Now;
     }
 }

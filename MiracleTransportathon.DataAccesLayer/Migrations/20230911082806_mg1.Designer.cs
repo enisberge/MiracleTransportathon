@@ -12,8 +12,8 @@ using MiracleTransportathon.DataAccesLayer.Concrete;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230909143644_0909231736_MiracleTransportathon")]
-    partial class _0909231736_MiracleTransportathon
+    [Migration("20230911082806_mg1")]
+    partial class mg1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,7 +270,6 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -295,7 +294,14 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
