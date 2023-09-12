@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiracleTransportathon.BusinessLayer.Abstract;
 using MiracleTransportathon.DataAccesLayer.Abstract;
+using MiracleTransportathon.DtoLayer.Dtos.UserDto;
+using MiracleTransportathon.DtoLayer.Dtos.VehicleDto;
+using MiracleTransportathon.EntityLayer.Concrete;
 
 namespace MiracleTransportathon.WebApi.Controllers
 {
@@ -10,38 +14,56 @@ namespace MiracleTransportathon.WebApi.Controllers
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
-
-        public VehicleController(IVehicleService vehicleService)
+        private readonly IMapper _mapper;
+        public VehicleController(IVehicleService vehicleService,IMapper mapper)
         {
             _vehicleService = vehicleService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult VehicleList()
         {
             var vehicles = _vehicleService.TGetAll();
+            var vehicleDtos = _mapper.Map<List<VehicleListDto>>(vehicles);
             return Ok(vehicles);
         }
 
         [HttpPost]
-        public IActionResult AddVehicle()
+        public IActionResult AddVehicle(VehicleAddDto vehicleDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var vehicle = _mapper.Map<Vehicle>(vehicleDto);
+            _vehicleService.TAdd(vehicle);
+
             return Ok();
         }
         [HttpDelete]
-        public IActionResult DeleteVehicle()
+        public IActionResult DeleteVehicle(int id)
         {
+            _vehicleService.DeleteVehicle(id);
+
             return Ok();
         }
         [HttpPut]
-        public IActionResult UpdateVehicle()
+        public IActionResult UpdateVehicle(VehicleUpdateDto vehicleUpdateDto)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var vehicle = _mapper.Map<Vehicle>(vehicleUpdateDto);
+            _vehicleService.TUpdateVehicle(vehicle);
+            return Ok("Başarıyla Güncellendi!");
         }
         [HttpGet("{id}")]
-        public IActionResult GetVehicle()
+        public IActionResult GetVehicle(int id)
         {
-            return Ok();
+            var vehicle = _vehicleService.TGetById(id);
+            return Ok(vehicle);
         }
     }
 }

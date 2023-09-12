@@ -9,5 +9,7 @@ namespace MiracleTransportathon.BusinessLayer.Abstract
 {
     public interface IVehicleService : IGenericService<Vehicle>
     {
+        void DeleteVehicle(int id);
+        void TUpdateVehicle(Vehicle vehicle);
     }
 }
