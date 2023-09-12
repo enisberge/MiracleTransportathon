@@ -9,5 +9,7 @@ namespace MiracleTransportathon.DataAccesLayer.Abstract
 {
     public interface IVehicleDal : IGenericDal<Vehicle>
     {
+        void DeleteVehicle(int id);
+        void UpdateVehicle(Vehicle vehicle);
     }
 }

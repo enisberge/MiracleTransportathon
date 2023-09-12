@@ -1,0 +1,479 @@
+﻿@{
+    ViewData["Title"] = "Araçlar";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+@section Styles{
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
+
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+}
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        $(function () {
+
+            var modelVerileri = {
+                "1": ["VNL", "FH16", "FMX"],// Volvo
+                "2": ["Actros", "Arocs", "Econic"],// Mercedes-Benz
+                "3": ["R-series", "S-series", "G-series"], // Scania
+                "4": ["F-150", "Ranger", "Transit"], // Ford
+                "5": ["Silverado", "Colorado", "Express"], // Chevrolet
+                "6": ["Cascadia", "Coronado", "M2"], // Freightliner
+                "7": ["W900", "T680", "T880"], // Kenworth
+                "8": ["579", "389", "567"] // Peterbilt
+            };
+
+            // "Araç Markası" seçildiğinde "Araç Modeli"ni güncellenmesi.
+            $("#brand").on("change", function () {
+                var secilenMarka = $(this).val();
+                var modelSecim = $("#model");
+
+                // Model seçimini temizle
+                modelSecim.empty();
+
+                // Seçilen marka değerine göre modelleri doldur
+                if (modelVerileri.hasOwnProperty(secilenMarka)) {
+                    var modeller = modelVerileri[secilenMarka];
+                    $.each(modeller, function (index, model) {
+                        modelSecim.append('<option value="' + model + '">' + model + '</option>');
+                    });
+                }
+            });
+
+
+            $(".btn-added").click(function () {
+                $('#newVehicle').modal('show');
+                $(".modal-title").text("Araç Ekle");
+
+                // Mevcut select kutularını temizle
+                $('#model').empty();
+
+                // Marka seçimlerini modal içine eklemek için gerekli kodları burada ekleyin
+                var secilenMarka = $("#brand").val();
+                var modelSelect = $("#model");
+
+                // Seçilen markaya göre modelleri doldur
+                if (modelVerileri.hasOwnProperty(secilenMarka)) {
+                    var modeller = modelVerileri[secilenMarka];
+                    $.each(modeller, function (index, model) {
+                        modelSelect.append('<option value="' + model + '">' + model + '</option>');
+                    });
+                }
+
+                // Mevcut select kutularını temizle
+                $('#model').empty();
+
+                // Marka seçimlerini modal içine eklemek için gerekli kodları burada ekleyin
+                var secilenMarka = $("#brand").val(); // Seçilen markayı al
+                var modelSelect = $("#model");
+
+                // Seçilen markaya göre modelleri doldur
+                if (modelVerileri.hasOwnProperty(secilenMarka)) {
+                    var modeller = modelVerileri[secilenMarka];
+                    $.each(modeller, function (index, model) {
+                        // Model ismini değil, sayıyı value olarak ayarla
+                        modelSelect.append('<option value="' + (index + 1) + '">' + model + '</option>');
+                    });
+                }
+                $('.btnClose').off('click').on('click', function () {
+
+
+                });
+                $('.btnSave').off('click').on('click', function () {
+
+                    var Type = parseInt($("#type").val());
+                    var Brand = parseInt($("#brand").val());
+                    var Model = $("#model").val();
+                    var Plate = $("#plate").val();
+                    var DriverName = $("#drivername").val();
+                    var DriverPhoneNumber = $("#driverphonenumber").val();
+
+
+                    if (Type == 0 || Type == undefined) {
+                        toastr.error("Araç Tipi boş geçilemez !");
+                        return false;
+                    }
+                    if (Brand == 0 || Brand == undefined) {
+                        toastr.error("Araç Markası boş geçilemez !");
+                        return false;
+                    }
+                    if (Model.trim() === "") {
+                        toastr.error("Araç Modeli boş geçilemez !");
+                        return false;
+                    }
+                    if (Plate.trim() === "") {
+                        toastr.error("Araç Plakası boş geçilemez !");
+                        return false;
+                    }
+                    if (DriverName.trim() === "") {
+                        toastr.error("Şoförün Adı boş geçilemez !");
+                        return false;
+                    }
+                    if (DriverPhoneNumber.trim() === "") {
+                        toastr.error("Şoförün telefon numarası boş geçilemez !");
+                        return false;
+                    }
+
+                    var modelData = { Type, Brand, Model, Plate, DriverName, DriverPhoneNumber };
+                    $.ajax({
+                        type: "POST",
+                        url: "/Vehicle/AddVehicle", // Controller ve Action adınıza göre ayarlayın
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(modelData),
+                        dataType: "json",
+                        success: function (result) {
+                            // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                            if (result.isSuccess) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Başarılı",
+                                    text: "Araç ekleme işlemi başarıyla tamamlandı!",
+                                }).then(function () {
+                                    // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                    $('#newVehicle').modal('hide');
+                                    recordtable.ajax.reload();
+                                });
+                            } else {
+                                toastr.error("Hata : Araç ekleme işlemi başarısız !");
+                            }
+                        },
+                        error: function () {
+                            // Hata durumunda yapılacak işlemler
+                            toastr.error("Hata : Araç ekleme işlemi başarısız !");
+                        }
+                    });
+
+                });
+
+            });
+
+            $("#vehicleTable tbody").on("click", "a.btnEdit", function () {
+                var id = parseInt($(this).attr("data-id"));
+                $('#editVehicle').modal('show');
+                $(".modal-title").text("Araçları Güncelle");
+
+                $.ajax({
+                    url: '/Vehicle/GetVehicleById/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.isSuccess) {
+
+                            $("#updatetype").val(data.vehicle.type);
+                            $("#updatebrand").val(data.vehicle.brand);
+                            $("#updatemodel").val(data.vehicle.model);
+                            $("#updateplate").val(data.vehicle.plate);
+                            $("#updatedrivername").val(data.vehicle.drivername);
+                            $("#updatedriverphonenumber").val(data.vehicle.driverphonenumber);
+
+                        } else {
+
+                            toastr.error("Veri alınamadı !");
+                        }
+                    },
+                    error: function () {
+                        // Hata durumunda işleme geçin
+                        toastr.error('İstek başarısız.');
+                    }
+                });
+
+                $('.btnUpdate').off('click').on('click', function () {
+
+                    var Type = $("#updatetype").val();
+                    var Brand = $("#updatebrand").val();
+                    var Model = $("#updatemodel").val();
+                    var Plate = $("#updateplate").val();
+                    var DriverName = $("#updatedrivername").val();
+                    var DriverPhoneNumber = $("#updatedriverphonenumber").val();
+                    var Id = id;
+
+
+                    if (Type == 0 || Type == undefined) {
+                        toastr.error("Araç Tipi boş geçilemez !");
+                        return false;
+                    }
+                    if (Brand == 0 || Brand == undefined) {
+                        toastr.error("Araç Markası boş geçilemez !");
+                        return false;
+                    }
+                    if (Model.trim() === "") {
+                        toastr.error("Araç Modeli boş geçilemez !");
+                        return false;
+                    }
+                    if (Plate.trim() === "") {
+                        toastr.error("Araç Plakası boş geçilemez !");
+                        return false;
+                    }
+                    if (DriverName.trim() === "") {
+                        toastr.error("Şoförün Adı boş geçilemez !");
+                        return false;
+                    }
+                    if (DriverPhoneNumber.trim() === "") {
+                        toastr.error("Şoförün telefon numarası boş geçilemez !");
+                        return false;
+                    }
+
+                    var modelData = { Id, Type, Brand, Model, Plate, DriverName, DriverPhoneNumber };
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Vehicle/UpdateVehicle", // Controller ve Action adınıza göre ayarlayın
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(modelData),
+                        dataType: "json",
+                        success: function (result) {
+                            // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                            if (result.isSuccess) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Başarılı",
+                                    text: "Araç güncelleme işlemi başarıyla tamamlandı!",
+                                }).then(function () {
+                                    // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                    $('#editVehicle').modal('hide');
+                                    recordtable.ajax.reload();
+                                });
+                            } else {
+                                toastr.error("Hata : Araç ekleme işlemi başarısız !");
+                            }
+                        },
+                        error: function () {
+                            // Hata durumunda yapılacak işlemler
+                            toastr.error("Hata : Araç ekleme işlemi başarısız !");
+                        }
+                    });
+
+                });
+
+
+            });
+            recordtable = $('#vehicleTable').DataTable({
+                "ajax": {
+                    "url": "/Vehicle/GetVehicleList", // Veri çekmek için kullanacağınız URL
+                    "type": "GET", // HTTP isteği türü (GET veya POST)
+                    "dataSrc": "" // Verilerinizi içeren JSON nesnesinin kökü (eğer JSON veri dizisi içinde ise boş bırakabilirsiniz)
+                },
+                "columns": [
+                    { "data": "type" },
+                    { "data": "brand" },
+                    { "data": "model" },
+                    { "data": "plate" },
+                    { "data": "drivername" },
+                    { "data": "driverphonenumber" },
+                    { "data": "createdDate" },
+                    {
+                        "data": "id", className: "text-center text-nowrap", render: function (data, type, row) {
+                            return "<a href='javascript:;' class='btn btn-warning btn-sm btnEdit' data-toggle='tooltip' data-placement='left' title='Düzenle' data-id='" + data + "'><i class='fa fa-edit'></i></a>&nbsp;<a data-toggle='tooltip' data-placement='left' title='Sil' href='javascript:;' class='btn btn-danger btn-sm btnremove' data-id='" + data + "'><i class='fa fa-trash'></i></a>";
+                        }
+                    }
+                ]
+            });
+
+
+
+
+
+            $.ajax({
+                url: '/Vehicle/GetVehicleList', // Controller ve metot adını kullanarak uygun URL'yi oluşturun
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    // Hata durumunda burada işlem yapın
+                }
+            });
+        });
+
+
+    </script>
+
+}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="page-title">
+            <h4>Araçlar</h4>
+        </div>
+        <div class="page-btn">
+            <a href="javascript:;" class="btn btn-added"><img src="~/admindashboard/assets/img/icons/plus.svg" alt="img">Ekle</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="vehicleTable" class="table mb-0" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Araç Tipi</th>
+                                    <th>Araç Markası</th>
+                                    <th>Araç Modeli</th>
+                                    <th>Araç Plakası</th>
+                                    <th>Şoförün Adı</th>
+                                    <th>Şoförün Telefon Numarası</th>
+                                    <th>Oluşturulma Tarihi</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newVehicle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin:3px">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Araç Tipi</label>
+                                <select class="form-select" id="type" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Tır</option>
+                                    <option value="2">Kamyon</option>
+                                    <option value="3">Kamyonet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Araç Markası</label>
+                                <select class="form-select" id="brand" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Volvo</option>
+                                    <option value="2">Mercedes-Benz</option>
+                                    <option value="3">Scania</option>
+                                    <option value="4">Ford</option>
+                                    <option value="5">Chevrolet</option>
+                                    <option value="6">Freightliner</option>
+                                    <option value="7">Kenworth</option>
+                                    <option value="8">Peterbilt</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="model">Araç Modeli</label>
+                                <select class="form-select" id="model" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tarih</label>
+                                <input type="text" class="form-control" value="" id="year" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Araç Plakası</label>
+                                <input type="text" id="plate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Şoförün Adı</label>
+                                <input type="text" id="drivername" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Şoförün Telefon Numarası</label>
+                                <input type="text" id="driverphonenumber" class="form-control">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content:end">
+                    <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary btnSave" id="type-error">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editVehicle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin:3px">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Araç Tipi</label>
+                                <select class="form-select" id="updatetype" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Tır</option>
+                                    <option value="2">Kamyon</option>
+                                    <option value="3">Kamyonet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Araç Markası</label>
+                                <select class="form-select" id="updatebrand" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Volvo</option>
+                                    <option value="2">Mercedes-Benz</option>
+                                    <option value="3">Scania</option>
+                                    <option value="4">Ford</option>
+                                    <option value="5">Chevrolet</option>
+                                    <option value="6">Freightliner</option>
+                                    <option value="7">Kenworth</option>
+                                    <option value="8">Peterbilt</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="model">Araç Modeli</label>
+                                <select class="form-select" id="updatemodel" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tarih</label>
+                                <input type="text" class="form-control"  value="" id="updateyear" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Araç Plakası</label>
+                                <input type="text" id="updateplate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Şoförün Adı</label>
+                                <input type="text" id="updatedrivername" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Şoförün Telefon Numarası</label>
+                                <input type="text" id="updatedriverphonenumber" class="form-control">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content:end">
+                    <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary btnUpdate" id="type-error">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

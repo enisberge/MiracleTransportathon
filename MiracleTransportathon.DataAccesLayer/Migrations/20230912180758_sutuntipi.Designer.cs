@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiracleTransportathon.DataAccesLayer.Concrete;
 
@@ -11,9 +12,11 @@ using MiracleTransportathon.DataAccesLayer.Concrete;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230912180758_sutuntipi")]
+    partial class sutuntipi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,18 +149,10 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApartmentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DestinationAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -167,18 +162,8 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Property<int>("DestinationDistrictId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DestinationLift")
-                        .HasColumnType("int");
-
                     b.Property<int>("DestinationLocalityId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ExtraService")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("MovingDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("OriginAddress")
                         .IsRequired()
@@ -190,17 +175,15 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Property<int>("OriginDistrictId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OriginLift")
-                        .HasColumnType("int");
-
                     b.Property<int>("OriginLocalityId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

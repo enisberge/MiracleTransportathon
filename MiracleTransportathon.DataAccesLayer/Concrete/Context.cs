@@ -13,7 +13,9 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=MiracleTransportathonDb; integrated security=true");
+            //optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=MiracleTransportathonDb; integrated security=true");
+            optionsBuilder.UseSqlServer("server=(LocalDb)\\MSSQLLocalDB;database=MiracleTransportathonDb; integrated security=true");
+
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Message> Messages { get; set; }

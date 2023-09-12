@@ -13,6 +13,11 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
             _vehicleDal = vehicleDal;
         }
 
+        public void DeleteVehicle(int id)
+        {
+            _vehicleDal.DeleteVehicle(id);
+        }
+
         public void TAdd(Vehicle entity)
         {
             _vehicleDal.Add(entity);
@@ -36,6 +41,11 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
         public void TUpdate(Vehicle entity)
         {
             _vehicleDal.Update(entity);
+        }
+
+        public void TUpdateVehicle(Vehicle vehicle)
+        {
+            _vehicleDal.UpdateVehicle(vehicle);
         }
     }
 }
