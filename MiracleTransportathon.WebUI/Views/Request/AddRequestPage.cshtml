@@ -1,0 +1,514 @@
+﻿@{
+    ViewData["Title"] = "Talep Oluştur";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+@section Styles{
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
+
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+}
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+
+
+
+            $("#page1next").click(function () {
+                var OriginCityId = $("#origincity").val();
+                var OriginDistrictId = $("#origindistrict").val();
+                var OriginLocalityId = $("#originlocality").val();
+                var OriginAddress = $("#originaddress").val().trim();
+                var DestinationCityId = $("#destinationcity").val();
+                var DestinationDistrictId = $("#destinationdistrict").val();
+                var DestinationLocalityId = $("#destinationlocality").val();
+                var DestinationAddress = $("#destinationaddress").val().trim();
+
+
+                if (OriginCityId == "0") {
+                    toastr.error("Yükleme il bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (OriginDistrictId == "0") {
+                    toastr.error("Yükleme ilçe bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (OriginLocalityId == "0") {
+                    toastr.error("Yükleme mahalle bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (OriginAddress === "") {
+                    toastr.error("Yükleme adres bilgisi boş geçilemez !");
+                    return false;
+                }
+
+                if (DestinationCityId == "0") {
+                    toastr.error("Varış il bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (DestinationDistrictId == "0") {
+                    toastr.error("Varış ilçe bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (DestinationLocalityId == "0") {
+                    toastr.error("Varış mahalle bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (DestinationAddress === "") {
+                    toastr.error("Varış adres bilgisi boş geçilemez !");
+                    return false;
+                }
+            });
+
+
+            $("#page2next").click(function () {
+                var MovingDate = $("#movingdate").val().trim();
+                var ApartmentType = $("#apartmenttype").val();
+
+                if (MovingDate === "") {
+                    toastr.error("Taşıma tarihi bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (ApartmentType == "0") {
+                    toastr.error("Apartman tipi bilgisi boş geçilemez !");
+                    return false;
+                }
+
+            });
+
+            $("#btnAdd").click(function () {
+
+                var OriginCityId = parseInt($("#origincity").val());
+                var OriginDistrictId = parseInt($("#origindistrict").val());
+                var OriginLocalityId = parseInt($("#originlocality").val());
+                var OriginAddress = $("#originaddress").val();
+                var DestinationCityId = parseInt($("#destinationcity").val());
+                var DestinationDistrictId = parseInt($("#destinationdistrict").val());
+                var DestinationLocalityId = parseInt($("#destinationlocality").val());
+                var DestinationAddress = $("#destinationaddress").val();
+                var MovingDate = moment($("#movingdate").val(), 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ss');
+                var ApartmentType = $("#apartmenttype").val();
+                var Description = $("#description").val();
+                var OriginLift = $("#originliftchecked").prop('checked') ? 1 : 0;
+                var DestinationLift = $("#destinationliftchecked").prop('checked') ? 1 : 0;
+
+               
+
+                var selectedValues = [];
+                $("#extraservice :checkbox:checked").each(function () {
+                    selectedValues.push($(this).val());
+                });
+
+                // Diziyi virgülle ayrılmış bir stringe dönüştür
+                var ExtraService = selectedValues.join(",");
+
+                var modelData = { OriginCityId, OriginDistrictId, OriginLocalityId, OriginAddress, DestinationCityId, DestinationDistrictId, DestinationLocalityId, DestinationAddress, ApartmentType, Description, ExtraService, OriginLift, DestinationLift, MovingDate };
+                $.ajax({
+                    type: "POST",
+                    url: "/Request/AddRequest", // Controller ve Action adınıza göre ayarlayın
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(modelData),
+                    dataType: "json",
+                    success: function (result) {
+                        // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                        if (result.isSuccess) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Başarılı",
+                                text: "Talep oluşturma işlemi başarıyla tamamlandı!",
+                            }).then(function () {
+                                // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                window.location.href = "/Request/RequestList";
+                            });
+                        } else {
+                            toastr.error("Hata : Talep oluşturma işlemi başarısız !");
+                        }
+                    },
+                    error: function () {
+                        // Hata durumunda yapılacak işlemler
+                        toastr.error("Hata : Talep oluşturma işlemi başarısız !");
+                    }
+                });
+            });
+        });
+    </script>
+}
+<div class="row">
+
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Talep Oluştur</h4>
+            </div>
+            <div class="card-body">
+                <div id="progrss-wizard" class="twitter-bs-wizard">
+                    <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
+                        <li class="nav-item">
+                            <a href="#progress-seller-details" class="nav-link" data-toggle="tab">
+                                <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                     title="User Details">
+                                    <i class="far fa-user"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#progress-company-document" class="nav-link" data-toggle="tab">
+                                <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                     title="Address Detail">
+                                    <i class="fas fa-map-pin"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#progress-bank-detail" class="nav-link" data-toggle="tab">
+                                <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                     title="Payment Details">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div id="bar" class="progress mt-4">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated">
+                        </div>
+                    </div>
+                    <div class="tab-content twitter-bs-wizard-tab-content">
+                        <div class="tab-pane" id="progress-seller-details">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="si si-home" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-home"></i>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="housetohouse" value="1" checked>
+                                            <label class="form-check-label" for="housetohouse">Evden Eve</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex flex-column align-items-center">
+
+                                        <i class="pe-7s-print" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="pe-7s-print"></i>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="office" value="2">
+                                            <label class="form-check-label" for="office">Ofis</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="si si-social-dropbox" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-social-dropbox"></i>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="heavygoods" value="3">
+                                            <label class="form-check-label" for="heavygoods">Büyük Eşya</label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 d-flex">
+                                    <div class="card flex-fill">
+                                        <div class="card-header" style="text-align:center; border-bottom:1px solid #e8ebed">
+                                            <span class="card-title" style="font-size:12px">Yükleme Noktası</span>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong>İl</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="origincity">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Adana</option>
+                                                        <option value="2">Mersin</option>
+                                                        <option value="3">İstanbul</option>
+                                                        <option value="4">Amasya</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong><strong>İl</strong>çe</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="origindistrict">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Mezitli</option>
+                                                        <option value="2">Karaduvar</option>
+                                                        <option value="3">Karacailyas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong>Mahalle</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="originlocality">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Mezitli</option>
+                                                        <option value="2">Karaduvar</option>
+                                                        <option value="3">Karacailyas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label" for="originaddress"><strong>Açık Adres</strong></label>
+                                                <div class="col-lg-9">
+                                                    <textarea class="form-control" id="originaddress" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"></label>
+                                                <div class="col-lg-9">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="originliftchecked">
+                                                        <label class="form-check-label" for="originliftchecked">
+                                                            Binada asansör var mı ?
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 d-flex">
+                                    <div class="card flex-fill">
+                                        <div class="card-header" style="text-align:center; border-bottom:1px solid #e8ebed">
+                                            <span class="card-title" style="font-size:12px">Varış Noktası</span>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong>İl</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="destinationcity">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Adana</option>
+                                                        <option value="2">Mersin</option>
+                                                        <option value="3">İstanbul</option>
+                                                        <option value="4">Amasya</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong>İlçe</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="destinationdistrict">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Mezitli</option>
+                                                        <option value="2">Karaduvar</option>
+                                                        <option value="3">Karacailyas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"><strong>Mahalle</strong></label>
+                                                <div class="col-lg-9">
+                                                    <select class="select" id="destinationlocality">
+                                                        <option value="0">Seçiniz</option>
+                                                        <option value="1">Mezitli</option>
+                                                        <option value="2">Karaduvar</option>
+                                                        <option value="3">Karacailyas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label" for="destinationaddress"><strong>Açık Adres</strong></label>
+                                                <div class="col-lg-9">
+                                                    <textarea class="form-control" id="destinationaddress" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 col-form-label"></label>
+                                                <div class="col-lg-9">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="destinationliftchecked">
+                                                        <label class="form-check-label" for="destinationliftchecked">
+                                                            Binada asansör var mı ?
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                <li class="next">
+                                    <a href="javascript: void(0);" id="page1next" class="btn btn-primary">
+                                        İleri <i class="bx bx-chevron-right ms-1"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="progress-company-document">
+                            <div>
+
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="progresspill-pancard-input"
+                                                       class="form-label"><strong>Taşıma Tarihi </strong></label>
+                                                <div class="form-group">
+                                                    <div class="input-groupicon">
+                                                        <input type="text" id="movingdate" placeholder="DD-MM-YYYY" class="datetimepicker">
+                                                        <div class="addonset">
+                                                            <img src="~/admindashboard/assets/img/icons/calendars.svg" alt="img">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="progresspill-vatno-input"
+                                                       class="form-label"><strong>Daire Tipi</strong></label>
+                                                <select class="select" id="apartmenttype">
+                                                    <option value="0">Seçiniz</option>
+                                                    <option value="1">Stüdyo</option>
+                                                    <option value="2">1+0</option>
+                                                    <option value="3">1+1</option>
+                                                    <option value="4">2+1</option>
+                                                    <option value="5">3+1</option>
+                                                    <option value="6">4+1</option>
+                                                    <option value="7">5+1</option>
+                                                    <option value="8">Dublex</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    <label for="progresspill-cstno-input"
+                                                           class="form-label"><strong>Almak istediğiniz ekstra hizmetler?</strong></label>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-11" id="extraservice">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="1" id="boxing">
+                                                            <label class="form-check-label" for="boxingservice">
+                                                                Kutulama - Toplama
+                                                            </label>
+
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="2" id="installationservice">
+                                                            <label class="form-check-label" for="installationservice">
+                                                                Avize Asma - Duvara Tv Montajı - Duvara Sabitleme - Store Perde Takılması
+                                                            </label>
+
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="3" id="liftservice">
+                                                            <label class="form-check-label" for="liftservice">
+                                                                Bina Dışı Asansör Hizmeti
+                                                            </label>
+
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="4" id="safeliftservice">
+                                                            <label class="form-check-label" for="safeliftservice">
+                                                                Kasa Taşıması (300 kg üzeri ise ayrıca not kısmında belirtmenizi rica ederiz.)
+                                                            </label>
+
+                                                        </div>
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox" value="5" id="personaltyservice">
+                                                            <label class="form-check-label" for="personaltyservice">
+                                                                Özel Taşıma Gerektiren Eşyanız Var mı ? (Kırılacak eşyalar vb. ayrıca not kısmında belirtmenizi rica ederiz.)
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="progresspill-servicetax-input"
+                                                       class="form-label"><strong>İlan Açıklaması</strong></label>
+                                                <textarea class="form-control" id="description" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                                <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                    <li class="previous">
+                                        <a href="javascript: void(0);"
+                                           class="btn btn-primary" onclick="nextTab()">
+                                            <i class="bx bx-chevron-left me-1"></i> Geri
+                                        </a>
+                                    </li>
+                                    <li class="next">
+                                        <a href="javascript: void(0);"
+                                           class="btn btn-primary" id="page2next">
+                                            İleri<i class="bx bx-chevron-right ms-1"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="progress-bank-detail">
+                            <div>
+
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <div class="col-md-6 col-sm-6 mx-auto">
+                                                    <div class="ribbon-wrapper card">
+                                                        <div class="card-body">
+                                                            <div class="ribbon ribbon-success" style="background-color:cornflowerblue"><strong>Bilgi !</strong></div>
+                                                            <h5>Kaydederseniz talebiniz oluşturulacak ve firmalar tarafından görüntülenecektir.</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                                <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                    <li class="previous">
+                                        <a href="javascript: void(0);"
+                                           class="btn btn-primary" onclick="nextTab()">
+                                            <i class="bx bx-chevron-left me-1"></i> Geri
+                                        </a>
+                                    </li>
+                                    <li class="float-end">
+                                        <a href="javascript: void(0);"
+                                           class="btn btn-primary" id="btnAdd" data-bs-toggle="modal"
+                                           data-bs-target=".confirmModal">Kaydet</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

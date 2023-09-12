@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiracleTransportathon.EntityLayer.Concrete
+﻿namespace MiracleTransportathon.WebUI.Models.Request
 {
-    public class Request
+    public class AddRequestViewModel
     {
-        public int Id { get; set; }
         public int Type { get; set; } //evden eve, ofis taşıma, büyük hacimli eşya taşıma
 
         // Nereden Bilgisi (Origin)
@@ -31,13 +24,8 @@ namespace MiracleTransportathon.EntityLayer.Concrete
         public string ExtraService { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }=DateTime.Now;
 
-        public int UserId { get; set; }
-
-        public User User { get; set; }
-        public Reservation Reservation{ get; set; }
-        public List<Offer> Offers { get; set; }
-
+        public int UserId { get; set; } = 1;
     }
 }

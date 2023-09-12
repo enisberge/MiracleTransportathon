@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class mg1 : Migration
+    public partial class _1209232254_MiracleTransportathon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,14 +91,20 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     OriginCityId = table.Column<int>(type: "int", nullable: false),
                     OriginDistrictId = table.Column<int>(type: "int", nullable: false),
                     OriginLocalityId = table.Column<int>(type: "int", nullable: false),
                     OriginAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OriginLift = table.Column<int>(type: "int", nullable: false),
+                    DestinationLift = table.Column<int>(type: "int", nullable: false),
+                    MovingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DestinationCityId = table.Column<int>(type: "int", nullable: false),
                     DestinationDistrictId = table.Column<int>(type: "int", nullable: false),
                     DestinationLocalityId = table.Column<int>(type: "int", nullable: false),
+                    DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApartmentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExtraService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),

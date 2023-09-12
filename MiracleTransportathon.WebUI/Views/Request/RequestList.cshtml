@@ -1,0 +1,232 @@
+﻿@{
+    ViewData["Title"] = "Talepler";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+@section Scripts{
+    <script type="text/javascript">
+        var recordtable;
+        $(function () {
+
+            $.ajax({
+                url: '/Request/GetRequestList', // Controller ve metot adını kullanarak uygun URL'yi oluşturun
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    // Hata durumunda burada işlem yapın
+                }
+            });
+
+            recordtable = $('#requestTable').DataTable({
+                "ajax": {
+                    "url": "/Request/GetRequestList", // Veri çekmek için kullanacağınız URL
+                    "type": "GET", // HTTP isteği türü (GET veya POST)
+                    "dataSrc": "" // Verilerinizi içeren JSON nesnesinin kökü (eğer JSON veri dizisi içinde ise boş bırakabilirsiniz)
+                },
+                "columns": [
+                    { "data": "type" },
+                    { "data": "originCityId" },
+                    { "data": "originDistrictId" },
+                    { "data": "originAddress" },
+                    { "data": "destinationCityId" },
+                    { "data": "destinationDistrictId" },
+                    { "data": "destinationAddress" },
+                    { "data": "apartmentType" },
+                    { "data": "movingDate" }
+                  
+                ]
+            });
+
+
+        });
+
+
+    </script>
+
+}
+<div class="content">
+    <div class="page-header">
+        <div class="page-title">
+            <h4>Talepler</h4>
+            <h6>Manage your Sales Report</h6>
+        </div>
+        <div class="page-btn">
+            <a href="/Request/AddRequestPage" class="btn btn-added"><img src="~/admindashboard/assets/img/icons/plus.svg" alt="img">Ekle</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-top">
+                <div class="search-set">
+                    <div class="search-path">
+                        <a class="btn btn-filter" id="filter_search">
+                            <img src="~/admindashboard/assets/img/icons/filter.svg" alt="img">
+                            <span><img src="~/admindashboard/assets/img/icons/closes.svg" alt="img"></span>
+                        </a>
+                    </div>
+                    <div class="search-input">
+                        <a class="btn btn-searchset">
+                            <img src="~/admindashboard/assets/img/icons/search-white.svg"
+                                 alt="img">
+                        </a>
+                    </div>
+                </div>
+                <div class="wordset">
+                    <ul>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf">
+                                <img src="~/admindashboard/assets/img/icons/pdf.svg" alt="img">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel">
+                                <img src="~/admindashboard/assets/img/icons/excel.svg" alt="img">
+                            </a>
+                        </li>
+                        <li>
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="print">
+                                <img src="~/admindashboard/assets/img/icons/printer.svg" alt="img">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" id="filter_inputs">
+                <div class="card-body pb-0">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-6 col-12">
+                            <div class="form-group">
+                                <div class="input-groupicon">
+                                    <input type="text" placeholder="From Date" class="datetimepicker">
+                                    <div class="addonset">
+                                        <img src="~/admindashboard/assets/img/icons/calendars.svg" alt="img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6 col-12">
+                            <div class="form-group">
+                                <div class="input-groupicon">
+                                    <input type="text" placeholder="To Date" class="datetimepicker">
+                                    <div class="addonset">
+                                        <img src="~/admindashboard/assets/img/icons/calendars.svg" alt="img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-6 col-12 ms-auto">
+                            <div class="form-group">
+                                <a class="btn btn-filters ms-auto">
+                                    <img src="~/admindashboard/assets/img/icons/search-whites.svg" alt="img">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="requestTable" class="table mb-0 datenew" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Talep Türü</th>
+                            <th>Yükleme İl</th>
+                            <th>Yükleme İlçe</th>
+                            <th>Yükleme Adres</th>
+                            <th>Varış İl</th>
+                            <th>Varış İlçe</th>
+                            <th>Varış Adres</th>
+                            <th>Daire Tipi</th>
+                            <th>Taşıma Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="newRequest" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin:3px">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ad</label>
+                                <input type="text" id="name" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>E-Posta</label>
+                                <input type="email" id="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Kullanıcı Adı</label>
+                                <input type="text" id="username" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Soyad</label>
+                                <input type="text" id="surname" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefon</label>
+                                <input type="text" id="phone" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Parola</label>
+                                <input type="password" id="password" class="form-control">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Adresi</label>
+                                <textarea class="form-control" id="address" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rol</label>
+                                <select class="form-select" id="role" aria-label="Default select example">
+                                    <option value="0" selected>Seçiniz</option>
+                                    <option value="1">Kullanıcı</option>
+                                    <option value="2">Taşıyıcı</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Durum</label>
+                                <div class="form-check">
+
+                                    <input class="form-check-input" id="status" type="checkbox" value="" checked>
+                                    <label class="form-check-label" for="status">
+                                        Aktif / Pasif
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content:end">
+                    <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary btnSave" id="type-error">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

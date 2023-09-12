@@ -13,6 +13,8 @@ builder.Services.AddScoped<IUserDal, EfUserDal>();
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<IVehicleDal, EfVehicleDal>();
 builder.Services.AddScoped<IVehicleService, VehicleManager>();
+builder.Services.AddScoped<IRequestDal, EfRequestDal>();
+builder.Services.AddScoped<IRequestService, RequestManager>();
 
 //builder.Services.AddScoped
 builder.Services.AddAutoMapper(typeof(Program));
