@@ -9,5 +9,7 @@ namespace MiracleTransportathon.DataAccesLayer.Abstract
 {
     public interface ICompanyDal : IGenericDal<Company>
     {
+        void DeleteCompany(int id);
+        void UpdateCompany(Company company);
     }
 }

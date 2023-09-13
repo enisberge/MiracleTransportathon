@@ -13,6 +13,11 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
             _companyDal = companyDal;
         }
 
+        public void DeleteCompany(int id)
+        {
+            _companyDal.DeleteCompany(id);
+        }
+
         public void TAdd(Company entity)
         {
             _companyDal.Add(entity);
@@ -36,6 +41,11 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
         public void TUpdate(Company entity)
         {
             _companyDal.Update(entity);
+        }
+
+        public void TUpdateCompany(Company company)
+        {
+            _companyDal.UpdateCompany(company);
         }
     }
 }

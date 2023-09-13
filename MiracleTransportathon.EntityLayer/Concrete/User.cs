@@ -27,5 +27,6 @@ namespace MiracleTransportathon.EntityLayer.Concrete
 
         public List<Review> Reviews { get; set; }
         public List<Reservation> Reservations { get; set; }
+        public Company Company { get; set; }
     }
 }

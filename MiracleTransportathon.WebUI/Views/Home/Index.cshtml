@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Hoşgeldiniz";
+     Layout =null;
 }
 
     <style>
@@ -32,7 +33,7 @@
 
     .custom-btn {
         width: 30%; /* Butonun yatayda genişlemesini sağlar */
-        max-width: 200px; /* İstenen maksimum genişlik değerini ayarlayabilirsiniz */
+        max-width: 50%; /* İstenen maksimum genişlik değerini ayarlayabilirsiniz */
     }
 
 /* 
@@ -40,6 +41,9 @@
         opacity: 0.5;
     } */
     </style>
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <section class="h-100 gradient-form" @* style="background-color: #eee;" *@>
     <div class="container py-5 h-100">

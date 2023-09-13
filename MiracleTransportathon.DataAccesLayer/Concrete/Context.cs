@@ -71,6 +71,11 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
              .HasForeignKey(r => r.UserId)
              .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Company>()
+     .HasOne(c => c.User)
+     .WithOne(u => u.Company)
+     .HasForeignKey<Company>(c => c.UserId)
+     .OnDelete(DeleteBehavior.NoAction);
         }
 
 
@@ -83,13 +88,13 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
 
 
            );
-           
+
             modelBuilder.Entity<Company>().HasData(
-                new Company { Id = 1, Name = "Enis Ltd Şti",Type=1, Address="Tarsus orgaize sanayi ",CreatedDate=DateTime.Now,UserId=1 }
-              
+                new Company { Id = 1, Name = "Enis Ltd Şti", Type = 1, Address = "Tarsus orgaize sanayi ", CreatedDate = DateTime.Now, UserId = 1 }
+
             );
 
-          
+
         }
 
     }

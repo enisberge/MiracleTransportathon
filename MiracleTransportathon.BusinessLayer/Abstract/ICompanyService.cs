@@ -9,5 +9,8 @@ namespace MiracleTransportathon.BusinessLayer.Abstract
 {
     public interface ICompanyService : IGenericService<Company>
     {
+        void DeleteCompany(int id);
+        void TUpdateCompany(Company company);
+
     }
 }

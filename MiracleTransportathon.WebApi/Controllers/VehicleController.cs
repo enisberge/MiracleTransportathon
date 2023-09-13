@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiracleTransportathon.BusinessLayer.Abstract;
-using MiracleTransportathon.DataAccesLayer.Abstract;
-using MiracleTransportathon.DtoLayer.Dtos.UserDto;
 using MiracleTransportathon.DtoLayer.Dtos.VehicleDto;
 using MiracleTransportathon.EntityLayer.Concrete;
 
@@ -26,7 +23,7 @@ namespace MiracleTransportathon.WebApi.Controllers
         {
             var vehicles = _vehicleService.TGetAll();
             var vehicleDtos = _mapper.Map<List<VehicleListDto>>(vehicles);
-            return Ok(vehicles);
+            return Ok(vehicleDtos);
         }
 
         [HttpPost]
