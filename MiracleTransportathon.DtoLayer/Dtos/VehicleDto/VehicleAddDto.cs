@@ -21,7 +21,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.VehicleDto
         public string DriverName { get; set; }
         [Required(ErrorMessage = "Boş geçilemez.")]
         public string DriverPhoneNumber { get; set; }
-        public DateTime Year { get; set; }
+        public int Year { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CompanyId { get; set; }
     }

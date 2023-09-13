@@ -16,7 +16,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.VehicleDto
         public string Plate { get; set; }
         public string DriverName { get; set; }
         public string DriverPhoneNumber { get; set; }
-        public DateTime Year { get; set; }
+        public int Year { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CompanyId { get; set; }
     }

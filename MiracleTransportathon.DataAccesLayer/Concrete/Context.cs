@@ -76,7 +76,21 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
 
 
 
+        private void Seed(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+               new User { Id = 1, Name = "Enis", Surname = "Berge", Email = "enisberge@gmail.com", Password = "12345678", PhoneNumber = "05344276349", Address = "Karacailyas mah. Akdeniz/Mersin", Status = 1, Role = 2, CreatedDate = DateTime.Now }
 
+
+           );
+           
+            modelBuilder.Entity<Company>().HasData(
+                new Company { Id = 1, Name = "Enis Ltd Şti",Type=1, Address="Tarsus orgaize sanayi ",CreatedDate=DateTime.Now,UserId=1 }
+              
+            );
+
+          
+        }
 
     }
 }

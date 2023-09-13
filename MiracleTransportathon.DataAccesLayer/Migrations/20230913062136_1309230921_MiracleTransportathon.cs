@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class _1209232254_MiracleTransportathon : Migration
+    public partial class _1309230921_MiracleTransportathon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -157,11 +157,11 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Brand = table.Column<int>(type: "int", nullable: false),
-                    Model = table.Column<int>(type: "int", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Plate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriverPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false)
                 },

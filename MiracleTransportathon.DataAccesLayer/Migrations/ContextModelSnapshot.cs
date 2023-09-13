@@ -363,8 +363,8 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Year")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

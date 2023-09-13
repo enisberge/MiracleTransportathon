@@ -19,6 +19,7 @@
     <script type="text/javascript">
         var recordtable;
         $(function () {
+            $('#year').yearpicker();
 
             var modelVerileri = {
                 "1": ["VNL", "FH16", "FMX"],// Volvo
@@ -95,7 +96,7 @@
                     var Plate = $("#plate").val();
                     var DriverName = $("#drivername").val();
                     var DriverPhoneNumber = $("#driverphonenumber").val();
-
+                    var Year = $("#year").val().trim();
 
                     if (Type == 0 || Type == undefined) {
                         toastr.error("Araç Tipi boş geçilemez !");
@@ -121,8 +122,11 @@
                         toastr.error("Şoförün telefon numarası boş geçilemez !");
                         return false;
                     }
-
-                    var modelData = { Type, Brand, Model, Plate, DriverName, DriverPhoneNumber };
+                    if (Year === "") {
+                        toastr.error("Model yılı bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    var modelData = { Type, Brand, Model, Plate, DriverName, DriverPhoneNumber, Year };
                     $.ajax({
                         type: "POST",
                         url: "/Vehicle/AddVehicle", // Controller ve Action adınıza göre ayarlayın
@@ -193,6 +197,8 @@
                     var Plate = $("#updateplate").val();
                     var DriverName = $("#updatedrivername").val();
                     var DriverPhoneNumber = $("#updatedriverphonenumber").val();
+                    var Year=$("#year").val().trim();
+
                     var Id = id;
 
 
@@ -220,8 +226,11 @@
                         toastr.error("Şoförün telefon numarası boş geçilemez !");
                         return false;
                     }
-
-                    var modelData = { Id, Type, Brand, Model, Plate, DriverName, DriverPhoneNumber };
+                    if (Year === "") {
+                        toastr.error("Model yılı bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    var modelData = { Id, Type, Brand, Model, Plate, DriverName, DriverPhoneNumber, Year };
                     $.ajax({
                         type: 'POST',
                         url: "/Vehicle/UpdateVehicle", // Controller ve Action adınıza göre ayarlayın
@@ -375,8 +384,9 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Tarih</label>
-                                <input type="text" class="form-control" value="" id="year" />
+                                <label>Model Yılı</label>
+                                <input type="text" id="year" class="form-control">
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -446,7 +456,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Tarih</label>
+                                <label>Model Yılı</label>
                                 <input type="text" class="form-control"  value="" id="updateyear" />
                             </div>
                         </div>
