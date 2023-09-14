@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiracleTransportathon.EntityLayer.Concrete;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,9 +14,6 @@ namespace MiracleTransportathon.DtoLayer.Dtos.RequestDto
         public int Type { get; set; } //evden eve, ofis taşıma, büyük hacimli eşya taşıma
 
         // Nereden Bilgisi (Origin)
-        public int OriginCityId { get; set; }
-        public int OriginDistrictId { get; set; }
-        public int OriginLocalityId { get; set; }
         public string OriginAddress { get; set; }
         //ne zaman taşınacak
         public int OriginLift { get; set; }
@@ -24,9 +22,6 @@ namespace MiracleTransportathon.DtoLayer.Dtos.RequestDto
         [Required(ErrorMessage = "Taşıma tarihi bilgisi boş geçilemez.")]
         public DateTime MovingDate { get; set; }
         // Nereye Bilgisi (Destination)
-        public int DestinationCityId { get; set; }
-        public int DestinationDistrictId { get; set; }
-        public int DestinationLocalityId { get; set; }
         public string DestinationAddress { get; set; }
         public string ApartmentType { get; set; }
 
@@ -36,5 +31,14 @@ namespace MiracleTransportathon.DtoLayer.Dtos.RequestDto
         public DateTime CreatedDate { get; set; }
 
         public int UserId { get; set; }
+
+        public int OriginCityId { get; set; }
+        public int OriginDistrictId { get; set; }
+        public int OriginLocalityId { get; set; }
+
+
+        public int DestinationCityId { get; set; }
+        public int DestinationDistrictId { get; set; }
+        public int DestinationLocalityId { get; set; }
     }
 }

@@ -22,6 +22,26 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlateNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -56,6 +76,60 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Districts");
+                });
+
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Locality", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.ToTable("Localities");
                 });
 
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Message", b =>
@@ -206,6 +280,18 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DestinationCityId");
+
+                    b.HasIndex("DestinationDistrictId");
+
+                    b.HasIndex("DestinationLocalityId");
+
+                    b.HasIndex("OriginCityId");
+
+                    b.HasIndex("OriginDistrictId");
+
+                    b.HasIndex("OriginLocalityId");
 
                     b.HasIndex("UserId");
 
@@ -384,6 +470,28 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.District", b =>
+                {
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.City", "City")
+                        .WithMany("Districts")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Locality", b =>
+                {
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.District", "District")
+                        .WithMany("Localities")
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("District");
+                });
+
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Message", b =>
                 {
                     b.HasOne("MiracleTransportathon.EntityLayer.Concrete.User", "Receiver")
@@ -432,11 +540,59 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
 
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Request", b =>
                 {
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.City", "DestinationCity")
+                        .WithMany("DestinationRequests")
+                        .HasForeignKey("DestinationCityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.District", "DestinationDistrict")
+                        .WithMany("DestinationRequests")
+                        .HasForeignKey("DestinationDistrictId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.Locality", "DestinationLocality")
+                        .WithMany("DestinationRequests")
+                        .HasForeignKey("DestinationLocalityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.City", "OriginCity")
+                        .WithMany("OriginRequests")
+                        .HasForeignKey("OriginCityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.District", "OriginDistrict")
+                        .WithMany("OriginRequests")
+                        .HasForeignKey("OriginDistrictId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MiracleTransportathon.EntityLayer.Concrete.Locality", "OriginLocality")
+                        .WithMany("OriginRequests")
+                        .HasForeignKey("OriginLocalityId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("MiracleTransportathon.EntityLayer.Concrete.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DestinationCity");
+
+                    b.Navigation("DestinationDistrict");
+
+                    b.Navigation("DestinationLocality");
+
+                    b.Navigation("OriginCity");
+
+                    b.Navigation("OriginDistrict");
+
+                    b.Navigation("OriginLocality");
 
                     b.Navigation("User");
                 });
@@ -498,11 +654,36 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.City", b =>
+                {
+                    b.Navigation("DestinationRequests");
+
+                    b.Navigation("Districts");
+
+                    b.Navigation("OriginRequests");
+                });
+
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Company", b =>
                 {
                     b.Navigation("Offers");
 
                     b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.District", b =>
+                {
+                    b.Navigation("DestinationRequests");
+
+                    b.Navigation("Localities");
+
+                    b.Navigation("OriginRequests");
+                });
+
+            modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Locality", b =>
+                {
+                    b.Navigation("DestinationRequests");
+
+                    b.Navigation("OriginRequests");
                 });
 
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Request", b =>

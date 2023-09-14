@@ -21,12 +21,12 @@ namespace MiracleTransportathon.WebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult UserList()
+        public IActionResult RequestList()
         {
-            var values = _requestService.TGetAll();
-            var requestDtos = _mapper.Map<List<RequestAddDto>>(values);
+            var values = _requestService.GetAllRequest();
+            //var requestDtos = _mapper.Map<List<RequestAddDto>>(values);
 
-            return Ok(requestDtos);
+            return Ok(values);
         }
         [HttpPost]
         public IActionResult AddRequest(RequestAddDto requestDto)
@@ -39,6 +39,14 @@ namespace MiracleTransportathon.WebApi.Controllers
             _requestService.TAdd(request);
 
             return Ok();
+        }
+
+        [HttpGet("{requestId}")]
+        public IActionResult GetRequestById(int requestId)
+        {
+            var values = _requestService.GetRequestById(requestId);
+
+            return Ok(values);
         }
     }
 }

@@ -25,6 +25,10 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
         public DbSet<Review> Reviews { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Locality> Localities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -71,6 +75,61 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
              .HasForeignKey(r => r.UserId)
              .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Request>()//her şehir birden fazla talepte olabilir
+                .HasOne(r => r.OriginCity)
+                .WithMany(c => c.OriginRequests)
+                .HasForeignKey(r => r.OriginCityId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Request>()
+              .HasOne(r => r.DestinationCity)
+              .WithMany(c => c.DestinationRequests)
+              .HasForeignKey(r => r.DestinationCityId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Request>()
+              .HasOne(r => r.OriginDistrict)
+              .WithMany(d => d.OriginRequests)
+              .HasForeignKey(r => r.OriginDistrictId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Request>()
+              .HasOne(r => r.DestinationDistrict)
+              .WithMany(d => d.DestinationRequests)
+              .HasForeignKey(r => r.DestinationDistrictId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Request>()
+            .HasOne(r => r.OriginLocality)
+            .WithMany(l => l.OriginRequests)
+            .HasForeignKey(r => r.OriginLocalityId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Request>()
+            .HasOne(r => r.DestinationLocality)
+            .WithMany(l => l.DestinationRequests)
+            .HasForeignKey(r => r.DestinationLocalityId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Company>()
+     .HasOne(c => c.User)
+     .WithOne(u => u.Company)
+     .HasForeignKey<Company>(c => c.UserId)
+     .OnDelete(DeleteBehavior.NoAction);
+
+
+            //     modelBuilder.Entity<City>()
+            //.HasMany(c => c.Districts)
+            //.WithOne(d => d.City)
+            //.HasForeignKey(d => d.CityId);
+
+            //     modelBuilder.Entity<City>()
+            //         .Property(c => c.PlateNumber)
+            //         .IsRequired();
+
         }
 
 
@@ -83,13 +142,13 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
 
 
            );
-           
+
             modelBuilder.Entity<Company>().HasData(
-                new Company { Id = 1, Name = "Enis Ltd Şti",Type=1, Address="Tarsus orgaize sanayi ",CreatedDate=DateTime.Now,UserId=1 }
-              
+                new Company { Id = 1, Name = "Enis Ltd Şti", Type = 1, Address = "Tarsus orgaize sanayi ", CreatedDate = DateTime.Now, UserId = 1 }
+
             );
 
-          
+
         }
 
     }

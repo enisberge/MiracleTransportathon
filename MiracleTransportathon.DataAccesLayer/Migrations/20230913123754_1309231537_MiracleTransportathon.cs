@@ -6,11 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class _1309230921_MiracleTransportathon : Migration
+    public partial class _1309231537_MiracleTransportathon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlateNumber = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -31,6 +45,27 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Districts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Districts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Districts_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,37 +121,23 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Requests",
+                name: "Localities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    OriginCityId = table.Column<int>(type: "int", nullable: false),
-                    OriginDistrictId = table.Column<int>(type: "int", nullable: false),
-                    OriginLocalityId = table.Column<int>(type: "int", nullable: false),
-                    OriginAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OriginLift = table.Column<int>(type: "int", nullable: false),
-                    DestinationLift = table.Column<int>(type: "int", nullable: false),
-                    MovingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DestinationCityId = table.Column<int>(type: "int", nullable: false),
-                    DestinationDistrictId = table.Column<int>(type: "int", nullable: false),
-                    DestinationLocalityId = table.Column<int>(type: "int", nullable: false),
-                    DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApartmentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExtraService = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocalityId = table.Column<int>(type: "int", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Requests", x => x.Id);
+                    table.PrimaryKey("PK_Localities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Requests_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Localities_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -172,6 +193,72 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                         name: "FK_Vehicles_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    OriginAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OriginLift = table.Column<int>(type: "int", nullable: false),
+                    DestinationLift = table.Column<int>(type: "int", nullable: false),
+                    MovingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApartmentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExtraService = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    OriginCityId = table.Column<int>(type: "int", nullable: false),
+                    OriginDistrictId = table.Column<int>(type: "int", nullable: false),
+                    OriginLocalityId = table.Column<int>(type: "int", nullable: false),
+                    DestinationCityId = table.Column<int>(type: "int", nullable: false),
+                    DestinationDistrictId = table.Column<int>(type: "int", nullable: false),
+                    DestinationLocalityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Requests_Cities_DestinationCityId",
+                        column: x => x.DestinationCityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Cities_OriginCityId",
+                        column: x => x.OriginCityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Districts_DestinationDistrictId",
+                        column: x => x.DestinationDistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Districts_OriginDistrictId",
+                        column: x => x.OriginDistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Localities_DestinationLocalityId",
+                        column: x => x.DestinationLocalityId,
+                        principalTable: "Localities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Localities_OriginLocalityId",
+                        column: x => x.OriginLocalityId,
+                        principalTable: "Localities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Requests_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -250,6 +337,16 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Districts_CityId",
+                table: "Districts",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Localities_DistrictId",
+                table: "Localities",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ReceiverId",
                 table: "Messages",
                 column: "ReceiverId");
@@ -273,6 +370,36 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 name: "IX_Offers_VehicleId",
                 table: "Offers",
                 column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_DestinationCityId",
+                table: "Requests",
+                column: "DestinationCityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_DestinationDistrictId",
+                table: "Requests",
+                column: "DestinationDistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_DestinationLocalityId",
+                table: "Requests",
+                column: "DestinationLocalityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_OriginCityId",
+                table: "Requests",
+                column: "OriginCityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_OriginDistrictId",
+                table: "Requests",
+                column: "OriginDistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_OriginLocalityId",
+                table: "Requests",
+                column: "OriginLocalityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_UserId",
@@ -333,10 +460,19 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                 name: "Vehicles");
 
             migrationBuilder.DropTable(
+                name: "Localities");
+
+            migrationBuilder.DropTable(
                 name: "Companies");
 
             migrationBuilder.DropTable(
+                name: "Districts");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
         }
     }
 }

@@ -4,6 +4,7 @@ using MiracleTransportathon.BusinessLayer.Abstract;
 using MiracleTransportathon.BusinessLayer.Concrete;
 using MiracleTransportathon.DataAccesLayer.Abstract;
 using MiracleTransportathon.DataAccesLayer.Concrete;
+using MiracleTransportathon.DataAccesLayer.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,13 @@ builder.Services.AddScoped<IVehicleDal, EfVehicleDal>();
 builder.Services.AddScoped<IVehicleService, VehicleManager>();
 builder.Services.AddScoped<IRequestDal, EfRequestDal>();
 builder.Services.AddScoped<IRequestService, RequestManager>();
+builder.Services.AddScoped<ICityDal, EfCityDal>();
+builder.Services.AddScoped<ICityService, CityManager>();
+builder.Services.AddScoped<IOfferDal, EfOfferDal>();
+builder.Services.AddScoped<IOfferService, OfferManager>();
+
+
+
 
 //builder.Services.AddScoped
 builder.Services.AddAutoMapper(typeof(Program));

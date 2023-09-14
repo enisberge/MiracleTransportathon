@@ -85,6 +85,7 @@
 
             $("#btnAdd").click(function () {
 
+                var Type =parseInt($("input[name='requesttype']:checked").val());
                 var OriginCityId = parseInt($("#origincity").val());
                 var OriginDistrictId = parseInt($("#origindistrict").val());
                 var OriginLocalityId = parseInt($("#originlocality").val());
@@ -109,7 +110,7 @@
                 // Diziyi virgülle ayrılmış bir stringe dönüştür
                 var ExtraService = selectedValues.join(",");
 
-                var modelData = { OriginCityId, OriginDistrictId, OriginLocalityId, OriginAddress, DestinationCityId, DestinationDistrictId, DestinationLocalityId, DestinationAddress, ApartmentType, Description, ExtraService, OriginLift, DestinationLift, MovingDate };
+                var modelData = { Type, OriginCityId, OriginDistrictId, OriginLocalityId, OriginAddress, DestinationCityId, DestinationDistrictId, DestinationLocalityId, DestinationAddress, ApartmentType, Description, ExtraService, OriginLift, DestinationLift, MovingDate };
                 $.ajax({
                     type: "POST",
                     url: "/Request/AddRequest", // Controller ve Action adınıza göre ayarlayın
@@ -188,7 +189,7 @@
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="si si-home" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-home"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="housetohouse" value="1" checked>
+                                            <input class="form-check-input" type="radio" name="requesttype" id="housetohouse" value="1" checked>
                                             <label class="form-check-label" for="housetohouse">Evden Eve</label>
                                         </div>
                                     </div>
@@ -199,7 +200,7 @@
 
                                         <i class="pe-7s-print" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="pe-7s-print"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="office" value="2">
+                                            <input class="form-check-input" type="radio" name="requesttype" id="office" value="2">
                                             <label class="form-check-label" for="office">Ofis</label>
                                         </div>
                                     </div>
@@ -208,7 +209,7 @@
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="si si-social-dropbox" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-social-dropbox"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="heavygoods" value="3">
+                                            <input class="form-check-input" type="radio" name="requesttype" id="heavygoods" value="3">
                                             <label class="form-check-label" for="heavygoods">Büyük Eşya</label>
                                         </div>
                                     </div>

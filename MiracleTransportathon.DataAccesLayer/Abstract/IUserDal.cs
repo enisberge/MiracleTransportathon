@@ -11,5 +11,6 @@ namespace MiracleTransportathon.DataAccesLayer.Abstract
     {
         void DeleteUser(int id);
         void UpdateUser(User user);
+        
     }
 }

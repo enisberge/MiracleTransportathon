@@ -27,80 +27,80 @@
 
 
                 });
-                $('.btnSave').off('click').on('click', function () {
+                    $('.btnSave').off('click').on('click', function () {
 
-                    var Name = $("#name").val();
-                    var Surname = $("#surname").val();
-                    var Email = $("#email").val();
-                    var PhoneNumber = $("#phone").val();
-                    var Username = $("#username").val();
-                    var Password = $("#password").val();
-                    var Role = parseInt($("#role").val());
-                    var Address = $("#address").val();
-                    var Status = $("#status").is(":checked") ? 1 : 0;
+                        var Name = $("#name").val();
+                        var Surname = $("#surname").val();
+                        var Email = $("#email").val();
+                        var PhoneNumber = $("#phone").val();
+                        var Username = $("#username").val();
+                        var Password = $("#password").val();
+                        var Role = parseInt($("#role").val());
+                        var Address = $("#address").val();
+                        var Status = $("#status").is(":checked") ? 1 : 0;
 
 
 
-                    if (Name.trim() === "") {
-                        toastr.error("Ad boş geçilemez !");
-                        return false;
-                    }
-                    if (Surname.trim() === "") {
-                        toastr.error("Soyad boş geçilemez !");
-                        return false;
-                    }
-                    if (Email.trim() === "") {
-                        toastr.error("E-posta boş geçilemez !");
-                        return false;
-                    }
-                    if (PhoneNumber.trim() === "") {
-                        toastr.error("Telefon boş geçilemez !");
-                        return false;
-                    }
-                    if (Username.trim() === "") {
-                        toastr.error("Kullanıcı adı boş geçilemez !");
-                        return false;
-                    }
-                    if (Password.trim() === "") {
-                        toastr.error("Parola boş geçilemez !");
-                        return false;
-                    }
-                    if (Role == 0 || Role == undefined) {
-                        toastr.error("Rol seçiniz !");
-                        return false;
-                    }
+                        if (Name.trim() === "") {
+                            toastr.error("Ad boş geçilemez !");
+                            return false;
+                        }
+                        if (Surname.trim() === "") {
+                            toastr.error("Soyad boş geçilemez !");
+                            return false;
+                        }
+                        if (Email.trim() === "") {
+                            toastr.error("E-posta boş geçilemez !");
+                            return false;
+                        }
+                        if (PhoneNumber.trim() === "") {
+                            toastr.error("Telefon boş geçilemez !");
+                            return false;
+                        }
+                        if (Username.trim() === "") {
+                            toastr.error("Kullanıcı adı boş geçilemez !");
+                            return false;
+                        }
+                        if (Password.trim() === "") {
+                            toastr.error("Parola boş geçilemez !");
+                            return false;
+                        }
+                        if (Role == 0 || Role == undefined) {
+                            toastr.error("Rol seçiniz !");
+                            return false;
+                        }
 
-                    var modelData = { Name, Surname, Username, Email, PhoneNumber, Password, Role, Address, Status };
-                    $.ajax({
-                        type: "POST",
-                        url: "/User/AddUser", // Controller ve Action adınıza göre ayarlayın
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(modelData),
-                        dataType: "json",
-                        success: function (result) {
-                            // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
-                            if (result.isSuccess) {
-                                Swal.fire({
-                                    icon: "success",
-                                    title: "Başarılı",
-                                    text: "Kullanıcı ekleme işlemi başarıyla tamamlandı!",
-                                }).then(function () {
-                                    // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
-                                    $('#newUser').modal('hide');
-                                    recordtable.ajax.reload();
-                                });
-                            } else {
+                        var modelData = { Name, Surname, Username, Email, PhoneNumber, Password, Role, Address, Status };
+                        $.ajax({
+                            type: "POST",
+                            url: "/User/AddUser", // Controller ve Action adınıza göre ayarlayın
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(modelData),
+                            dataType: "json",
+                            success: function (result) {
+                                // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                                if (result.isSuccess) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Başarılı",
+                                        text: "Kullanıcı ekleme işlemi başarıyla tamamlandı!",
+                                    }).then(function () {
+                                        // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                        $('#newUser').modal('hide');
+                                        recordtable.ajax.reload();
+                                    });
+                                } else {
+                                    toastr.error("Hata : Kullanıcı ekleme işlemi başarısız !");
+                                }
+                            },
+                            error: function () {
+                                // Hata durumunda yapılacak işlemler
                                 toastr.error("Hata : Kullanıcı ekleme işlemi başarısız !");
                             }
-                        },
-                        error: function () {
-                            // Hata durumunda yapılacak işlemler
-                            toastr.error("Hata : Kullanıcı ekleme işlemi başarısız !");
-                        }
-                    });
+                        });
 
+                    });
                 });
-            });
 
             $("#userTable tbody").on("click", "a.btnEdit", function () {
                 var id = parseInt($(this).attr("data-id"));

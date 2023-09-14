@@ -36,7 +36,7 @@ namespace MiracleTransportathon.WebUI.Controllers
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
 
-                return new JsonResult(JsonConvert.DeserializeObject<List<RequestAddDto>>(jsonData));
+                return new JsonResult(JsonConvert.DeserializeObject<List<RequestListDto>>(jsonData));
             }
 
             return Json(new { error = "Veri çekme hatası" });
@@ -45,7 +45,7 @@ namespace MiracleTransportathon.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRequest([FromBody] AddRequestViewModel model)
         {
-          
+
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(model);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
@@ -53,6 +53,31 @@ namespace MiracleTransportathon.WebUI.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 return Json(new { isSuccess = true });
+            }
+            return Json(new { isSuccess = false });
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRequestById(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"http://localhost:5125/api/Request/{id}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var requestDto = JsonConvert.DeserializeObject<RequestListDto>(jsonData);
+
+
+
+                // Başarılı olduğunu belirten isSuccess değeri ile veriyi birleştirin
+                var result = new
+                {
+                    isSuccess = true,
+                    request = requestDto // İstediğiniz veriyi döndürebilirsiniz
+                };
+
+                return Json(result);
             }
             return Json(new { isSuccess = false });
 
