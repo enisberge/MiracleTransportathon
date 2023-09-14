@@ -24,6 +24,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.RequestDto
         public string ApartmentType { get; set; }
         public string ExtraService { get; set; }
         public string RequestDescription { get; set; }
+        public string BigItemDetails { get; set; }
         public int RequestStatus { get; set; }
         public DateTime RequestCreatedDate { get; set; }
         public int UserId { get; set; }

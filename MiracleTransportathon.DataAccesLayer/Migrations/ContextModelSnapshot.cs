@@ -73,7 +73,8 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Companies");
                 });
@@ -221,6 +222,10 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApartmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BigItemDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -462,9 +467,9 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.Company", b =>
                 {
                     b.HasOne("MiracleTransportathon.EntityLayer.Concrete.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("Company")
+                        .HasForeignKey("MiracleTransportathon.EntityLayer.Concrete.Company", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -696,6 +701,9 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
 
             modelBuilder.Entity("MiracleTransportathon.EntityLayer.Concrete.User", b =>
                 {
+                    b.Navigation("Company")
+                        .IsRequired();
+
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("Requests");

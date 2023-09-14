@@ -24,7 +24,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.RequestDto
         // Nereye Bilgisi (Destination)
         public string DestinationAddress { get; set; }
         public string ApartmentType { get; set; }
-
+        public string BigItemDetails { get; set; }
         public string ExtraService { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }

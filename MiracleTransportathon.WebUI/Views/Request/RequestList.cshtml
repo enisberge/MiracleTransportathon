@@ -35,15 +35,41 @@
                             $("#apartmenttype").text(data.request.apartmentType);
                             $("#createddate").text(data.request.requestCreatedDate);
                             $("#movingdate").text(data.request.movingDate);
-                            $("#originaddress").text(data.request.originCityName + ' - '  + data.request.originDistrictName + ' - ' + data.request.originLocalityName);
+                            $("#originaddress").text(data.request.originCityName + ' - ' + data.request.originDistrictName + ' - ' + data.request.originLocalityName);
+                            $("#originaddressdetails").text(data.request.originAddress);
+                            $("#destinationaddress").text(data.request.destinationCityName + ' - ' + data.request.destinationDistrictName + ' - ' + data.request.destinationLocalityName);
+                            $("#destinationaddressdetails").text(data.request.destinationAddress);
+                            $("#description").text(data.request.requestDescription);
+                            var extraService = getExtraService(data.request.extraService);
+                            var originLift = data.request.originLift;
 
-                            
+                            if (originLift == 0) {
+                                $("#originlift").text("Var")
+                            }
+                            else{
+                                $("#originlift").text("Yok")
+                            }
 
+                            var destinationLift = data.request.destinationLift;
 
+                            if (destinationLift == 0) {
+                                $("#destinationlift").text("Var")
+                            }
+                            else {
+                                $("#destinationlift").text("Yok")
+                            }
 
+                            // extraservice divini seçin
+                            var $extraserviceDiv = $('#extraservice');
+                            $extraserviceDiv.empty();
+                            // Dizideki her öğeyi dönün ve div içine ekleyin
+                            extraService.forEach(function (service) {
+                                // Yeni bir <p> elementi oluşturun ve içeriğini dizi öğesi ile doldurun
+                                var $yeniParagraf = $('<p>').text('* ' + service);
 
-
-
+                                // Oluşturulan <p> elementini div içine ekleyin
+                                $extraserviceDiv.append($yeniParagraf);
+                            });
 
                         } else {
 
@@ -369,12 +395,13 @@
                             <div class="col-md-12">
                                 <div class="ribbon-wrapper card">
                                     <div class="card-body">
-                                        <div class="ribbon ribbon-primary">Yükleme Noktası</div>
+                                        <div class="ribbon ribbon-secondary">Yükleme Noktası</div>
                                         <div class="form-group">
                                             <label><strong>İl / İlçe / Mahalle / Adres</strong></label>
                                             <label id="originaddress">İstanbul</label>
                                             <hr class="m-0" />
                                             <label id="originaddressdetails">Adres</label>
+                                            <label><strong>Bina içi asansör :</strong> <span id="originlift"></span> </label>
                                         </div>
                                     </div>
                                 </div>
@@ -401,19 +428,20 @@
                             <div class="col-md-12">
                                 <div class="ribbon-wrapper card">
                                     <div class="card-body">
-                                        <div class="ribbon ribbon-primary">Varış Noktası</div>
+                                        <div class="ribbon ribbon-success">Varış Noktası</div>
                                         <div class="form-group">
                                             <label><strong>İl / İlçe / Mahalle / Adres</strong></label>
                                             <label id="destinationaddress">İstanbul</label>
                                             <hr class="m-0" />
                                             <label id="destinationaddressdetails">Adres</label>
+                                            <label><strong>Bina içi asansör :</strong> <span id="destinationlift"></span> </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <label><strong>Extra Servis</strong></label>
-                                <label class="form-control" id="extraservice">extra servis</label>
+                                <div class="form-control" id="extraservice"></div>
                             </div>
                         </div>
                     </div>

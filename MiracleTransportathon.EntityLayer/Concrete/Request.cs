@@ -27,6 +27,8 @@ namespace MiracleTransportathon.EntityLayer.Concrete
         public string ExtraService { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }
+
+        public string BigItemDetails { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public int UserId { get; set; }

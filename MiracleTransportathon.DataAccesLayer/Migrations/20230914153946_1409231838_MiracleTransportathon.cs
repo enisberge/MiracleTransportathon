@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class _1309231537_MiracleTransportathon : Migration
+    public partial class _1409231838_MiracleTransportathon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,8 +88,7 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                         name: "FK_Companies_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +212,7 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                     ExtraService = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    BigItemDetails = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     OriginCityId = table.Column<int>(type: "int", nullable: false),
@@ -334,7 +334,8 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_UserId",
                 table: "Companies",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Districts_CityId",
