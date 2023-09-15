@@ -1,0 +1,149 @@
+﻿@{
+    ViewData["Title"] = "Hoşgeldiniz";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="~/admindashboard/assets/fonts/icomoon/style.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/css/accountstyle.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <!-- Style -->
+    <link href="~/admindashboard/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <title>Login #2</title>
+</head>
+<body>
+
+
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2" style="background-image:url(../../wwwroot/AdminDashboard/assets/img/bg_1.jpg) "></div>
+        <div class="contents order-2 order-md-1">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-7 mt-3 mb-3">
+                        <h3 style="text-align:center"><strong>Kayıt Ol</strong></h3>
+                        <form action="#" method="post">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="role" id="radio1" value="1" checked>
+                                <label class="form-check-label" for="radio1">Kullanıcı</label>
+                            </div>
+
+                            <div class="form-check form-check-inline mr-0" style="float:right;margin-right: 0">
+                                <input class="form-check-input" type="radio" name="role" id="radio2" value="2">
+                                <label class="form-check-label" for="radio2">Taşıyıcı</label>
+                            </div>
+                            <div class="form-group first">
+                                <label for="name">Adı</label>
+                                <input type="text" class="form-control" style="height:40px" placeholder="" id="name">
+                            </div>
+                            <div class="form-group first">
+                                <label for="name">Soyadı</label>
+                                <input type="text" class="form-control" style="height:40px" placeholder="" id="surname">
+                            </div>
+                            <div class="form-group first">
+                                <label for="name">Kullanıcı Adı</label>
+                                <input type="text" class="form-control" style="height:40px" placeholder="" id="username">
+                            </div>
+
+                            <div class="form-group last mb-3">
+                                <label for="password">Parola</label>
+                                <input type="password" class="form-control" style="height:40px" id="password">
+                            </div>
+                            <div class="form-group last mb-3">
+                                <label for="password">Parola Tekrar</label>
+                                <input type="password" class="form-control" style="height:40px" id="repassword">
+                            </div>
+                            <div class="form-group first">
+                                <label for="name">E-Posta Adresi</label>
+                                <input type="text" class="form-control" style="height:40px" placeholder="" id="email">
+                            </div>
+                            <div class="form-group last mb-3">
+                                <label for="password">Telefon Numarası</label>
+                                <input type="text" class="form-control" style="height:40px" id="phonenumber">
+                            </div>
+                            <div class="form-group last mb-3">
+                                <label for="password">Şirket Adı</label>
+                                <input type="password" class="form-control" style="height:40px" id="companyname">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyaddress">Şirket Adresi</label>
+                                <textarea class="form-control" id="companyaddress" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input value="Kaydet" id="btnSave" class="btn btn-block btn-primary float-end btn-sm">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script src="~/admindashboard/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="~/admindashboard/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admindashboard/assets/js/main.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            
+            $("#btnSave").click(function(){
+
+                var Role = $("input[name='role']:checked").val();
+
+                // Diğer form alanlarının değerlerini almak
+                var Name = $("#name").val();
+                var Surname = $("#surname").val();
+                var UserName = $("#username").val();
+                var Password = $("#password").val();
+                var ConfirmPassword = $("#repassword").val();
+                var Email = $("#email").val();
+                var PhoneNumber = $("#phonenumber").val();
+                var companyname = $("#companyname").val();
+                var companyaddress = $("#companyaddress").val();
+
+                var formData = { Name, Surname, UserName, Password, Email, PhoneNumber,ConfirmPassword };
+                formData.Role = $("input[name='role']:checked").val();
+
+                // Radio buton seçimini al
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/RegisterUser", // ControllerAdi, bu metodu içeren controller'ın adını temsil eder
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(formData),
+                    success: function (result) {
+                        // Başarılı yanıt geldiğinde yapılacak işlemler
+                        if (result.success) {
+                            // Başarılı olduğunda yönlendirme yapabilirsiniz
+                            window.location.href = "/Home/Index";
+                        } else {
+                            // Başarısız olduğunda uygun bir işlem yapabilirsiniz
+                            console.error(result.message);
+                        }
+                    },
+                    error: function (error) {
+                        // Hata durumunda yapılacak işlemler
+                        console.error("Hata oluştu: " + error.responseText);
+                    }
+                });
+            
+            });
+
+        });
+    </script>
+</body>
+</html>

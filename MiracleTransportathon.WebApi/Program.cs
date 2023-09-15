@@ -1,10 +1,15 @@
 using EnisBlog.DataAccessLayer.EntityFramework;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MiracleTransportathon.BusinessLayer.Abstract;
 using MiracleTransportathon.BusinessLayer.Concrete;
 using MiracleTransportathon.DataAccesLayer.Abstract;
 using MiracleTransportathon.DataAccesLayer.Concrete;
 using MiracleTransportathon.DataAccesLayer.EntityFramework;
+using MiracleTransportathon.EntityLayer.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +31,15 @@ builder.Services.AddScoped<IOfferService, OfferManager>();
 
 
 
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<Context>()
+    .AddDefaultTokenProviders();
 
 //builder.Services.AddScoped
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpContextAccessor();
 //apiyi dýþarýya açma
 builder.Services.AddCors(opt =>
 {
@@ -40,7 +50,13 @@ builder.Services.AddCors(opt =>
             .AllowAnyMethod();
     });
 });
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.LoginPath = "/account/Login/";
+                   options.LogoutPath = "/account/Login/";
+                   options.AccessDeniedPath = "/account/Login/";
+               });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("MiracleTransportathon");
+app.UseAuthentication(); // Kimlik doðrulama middleware'ini etkinleþtirin
 app.UseAuthorization();
 
 app.MapControllers();

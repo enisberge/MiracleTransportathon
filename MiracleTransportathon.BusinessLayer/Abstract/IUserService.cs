@@ -11,6 +11,6 @@ namespace MiracleTransportathon.BusinessLayer.Abstract
     {
         void DeleteUser(int id);
         void TUpdateUser(User user);
-
+        void RegisterUser(User user);
     }
 }

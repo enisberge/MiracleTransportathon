@@ -16,7 +16,12 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
         public void DeleteUser(int id)
         {
            _userDal.DeleteUser(id);
-        }    
+        }
+
+        public void RegisterUser(User user)
+        {
+           _userDal.RegisterUser(user);
+        }
 
         public void TAdd(User entity)
         {

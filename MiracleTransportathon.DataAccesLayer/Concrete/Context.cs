@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MiracleTransportathon.EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 namespace MiracleTransportathon.DataAccesLayer.Concrete
 {
     //veritabanına bağlandığımız kısım
-    public class Context : DbContext
+    public class Context : IdentityDbContext<User,Role,int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,7 +33,7 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentMessages)
@@ -129,27 +131,13 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
             //     modelBuilder.Entity<City>()
             //         .Property(c => c.PlateNumber)
             //         .IsRequired();
-
+            base.OnModelCreating(modelBuilder);
         }
 
 
 
 
-        private void Seed(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>().HasData(
-               new User { Id = 1, Name = "Enis", Surname = "Berge", Email = "enisberge@gmail.com", Password = "12345678", PhoneNumber = "05344276349", Address = "Karacailyas mah. Akdeniz/Mersin", Status = 1, Role = 2, CreatedDate = DateTime.Now }
-
-
-           );
-
-            modelBuilder.Entity<Company>().HasData(
-                new Company { Id = 1, Name = "Enis Ltd Şti", Type = 1, Address = "Tarsus orgaize sanayi ", CreatedDate = DateTime.Now, UserId = 1 }
-
-            );
-
-
-        }
+       
 
     }
 }

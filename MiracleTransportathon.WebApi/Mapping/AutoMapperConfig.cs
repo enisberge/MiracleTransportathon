@@ -6,6 +6,7 @@ using MiracleTransportathon.DtoLayer.Dtos.RequestDto;
 using MiracleTransportathon.DtoLayer.Dtos.UserDto;
 using MiracleTransportathon.DtoLayer.Dtos.VehicleDto;
 using MiracleTransportathon.EntityLayer.Concrete;
+using MiracleTransportathon.DtoLayer.Dtos.LoginDto;
 
 namespace MiracleTransportathon.WebApi.Mapping
 {
@@ -16,10 +17,17 @@ namespace MiracleTransportathon.WebApi.Mapping
             CreateMap<UserAddDto, User>();
             CreateMap<User,UserAddDto>();
 
+            CreateMap<User, RegisterUserDto>().ReverseMap();
+
+            
             CreateMap<UserUpdateDto, User>().ReverseMap();//reverse yapınca yukarıdakiyle aynı oluyor
             CreateMap<UserDeleteDto, User>().ReverseMap();//reverse yapınca yukarıdakiyle aynı oluyor
             CreateMap<UserListDto, User>().ReverseMap();
             CreateMap<RequestAddDto, Request>().ReverseMap();
+            CreateMap<RegisterUserDto, User>().ReverseMap();
+            CreateMap<UserLoginDto, User>().ReverseMap();
+
+
 
             CreateMap<VehicleAddDto, Vehicle>().ReverseMap();
             CreateMap<VehicleDeleteDto, Vehicle>().ReverseMap();

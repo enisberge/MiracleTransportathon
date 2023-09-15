@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MiracleTransportathon.BusinessLayer.Abstract;
@@ -8,6 +9,7 @@ using MiracleTransportathon.EntityLayer.Concrete;
 
 namespace MiracleTransportathon.WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase

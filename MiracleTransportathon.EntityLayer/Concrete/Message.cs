@@ -9,10 +9,6 @@ namespace MiracleTransportathon.EntityLayer.Concrete
     public class Message
     {
         public int Id { get; set; }
-
-       
-     
-        
         public string Content { get; set; }
         public DateTime CreatedDate { get; set; }
         public int IsRead { get; set; }

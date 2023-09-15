@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using MiracleTransportathon.DataAccesLayer.Concrete;
+using MiracleTransportathon.EntityLayer.Concrete;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<User,Role>().AddEntityFrameworkStores<Context>();
+
 
 // Add services to the container.
 builder.Services.AddHttpClient();
