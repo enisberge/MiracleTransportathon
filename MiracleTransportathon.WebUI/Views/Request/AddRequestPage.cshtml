@@ -20,6 +20,39 @@
         $(function () {
 
 
+            // Seçilen radio düğmesinin değerini alın
+            var requesttype = $('input[name="requesttype"]:checked').val();
+
+            // Eğer değer 3 ise "apartmenttypevisibility" divini gizle, aksi halde göster
+            if (requesttype === '3') {
+                $('#apartmenttypevisibility').css("display", "none");
+                $("#bigitem").css("display", "block");
+                $("#extraservicevisibility").css("display", "none");
+                //bigitem
+
+            } else {
+                $('#apartmenttypevisibility').css("display", "block");
+                $("#bigitem").css("display", "none");
+                $("#extraservicevisibility").css("display", "block");
+            }
+
+            $('input[name="requesttype"]').change(function () {
+                // Seçilen radio düğmesinin değerini alın
+                var requesttype = $('input[name="requesttype"]:checked').val();
+
+                // Eğer değer 3 ise "apartmenttypevisibility" divini gizle, aksi halde göster
+                if (requesttype === '3') {
+                    $('#apartmenttypevisibility').css("display", "none");
+                    $("#bigitem").css("display", "block");
+                    $("#extraservicevisibility").css("display", "none");
+                    //bigitem
+
+                } else {
+                    $('#apartmenttypevisibility').css("display", "block");
+                    $("#bigitem").css("display", "none");
+                    $("#extraservicevisibility").css("display", "block");
+                }
+            });
 
             $("#page1next").click(function () {
                 var OriginCityId = $("#origincity").val();
@@ -30,6 +63,9 @@
                 var DestinationDistrictId = $("#destinationdistrict").val();
                 var DestinationLocalityId = $("#destinationlocality").val();
                 var DestinationAddress = $("#destinationaddress").val().trim();
+
+
+                
 
 
                 if (OriginCityId == "0") {
@@ -71,6 +107,11 @@
             $("#page2next").click(function () {
                 var MovingDate = $("#movingdate").val().trim();
                 var ApartmentType = $("#apartmenttype").val();
+                var requesttype = $('input[name="requesttype"]:checked').val();
+                var Width = $("#width").val();
+                var Length = $("#length").val();
+                var Height = $("#height").val();
+                var Weight = $("#weight").val()
 
                 if (MovingDate === "") {
                     toastr.error("Taşıma tarihi bilgisi boş geçilemez !");
@@ -80,11 +121,35 @@
                     toastr.error("Apartman tipi bilgisi boş geçilemez !");
                     return false;
                 }
+                if (requesttype == "3") {
+                    if (Width == "") {
+
+                        toastr.error("En bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    if (Length == "") {
+
+                        toastr.error("Boy bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    if (Height == "") {
+
+                        toastr.error("Yükseklik bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    if (Weight == "") {
+
+                        toastr.error("Ağırlık bilgisi boş geçilemez !");
+                        return false;
+                    }
+                }
+
 
             });
 
             $("#btnAdd").click(function () {
 
+                var Type = parseInt($("input[name='requesttype']:checked").val());
                 var OriginCityId = parseInt($("#origincity").val());
                 var OriginDistrictId = parseInt($("#origindistrict").val());
                 var OriginLocalityId = parseInt($("#originlocality").val());
@@ -98,8 +163,11 @@
                 var Description = $("#description").val();
                 var OriginLift = $("#originliftchecked").prop('checked') ? 1 : 0;
                 var DestinationLift = $("#destinationliftchecked").prop('checked') ? 1 : 0;
-
-               
+                var Width = $("#width").val();
+                var Length = $("#length").val();
+                var Height = $("#height").val();
+                var Weight = $("#weight").val()
+                var BigItemDetails = Width + ' x ' + Length + ' x ' + Height + ' - ' + Weight + ' Kg';
 
                 var selectedValues = [];
                 $("#extraservice :checkbox:checked").each(function () {
@@ -109,7 +177,7 @@
                 // Diziyi virgülle ayrılmış bir stringe dönüştür
                 var ExtraService = selectedValues.join(",");
 
-                var modelData = { OriginCityId, OriginDistrictId, OriginLocalityId, OriginAddress, DestinationCityId, DestinationDistrictId, DestinationLocalityId, DestinationAddress, ApartmentType, Description, ExtraService, OriginLift, DestinationLift, MovingDate };
+                var modelData = { Type, OriginCityId, OriginDistrictId, OriginLocalityId, OriginAddress, DestinationCityId, DestinationDistrictId, DestinationLocalityId, DestinationAddress, ApartmentType, Description, ExtraService, OriginLift, DestinationLift, MovingDate, BigItemDetails };
                 $.ajax({
                     type: "POST",
                     url: "/Request/AddRequest", // Controller ve Action adınıza göre ayarlayın
@@ -188,7 +256,7 @@
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="si si-home" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-home"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="housetohouse" value="1" checked>
+                                            <input class="form-check-input" type="radio" name="requesttype" id="housetohouse" value="1" checked>
                                             <label class="form-check-label" for="housetohouse">Evden Eve</label>
                                         </div>
                                     </div>
@@ -199,7 +267,7 @@
 
                                         <i class="pe-7s-print" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="pe-7s-print"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="office" value="2">
+                                            <input class="form-check-input" type="radio" name="requesttype" id="office" value="2">
                                             <label class="form-check-label" for="office">Ofis</label>
                                         </div>
                                     </div>
@@ -208,7 +276,7 @@
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="si si-social-dropbox" style="font-size:35px; color:#ff9f43" data-bs-toggle="tooltip" title="si-social-dropbox"></i>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="heavygoods" value="3">
+                                            <input class="form-check-input" type="radio" name="requesttype" id="heavygoods" value="3">
                                             <label class="form-check-label" for="heavygoods">Büyük Eşya</label>
                                         </div>
                                     </div>
@@ -372,26 +440,46 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" id="apartmenttypevisibility">
                                             <div class="mb-3">
                                                 <label for="progresspill-vatno-input"
                                                        class="form-label"><strong>Daire Tipi</strong></label>
                                                 <select class="select" id="apartmenttype">
-                                                    <option value="0">Seçiniz</option>
-                                                    <option value="1">Stüdyo</option>
-                                                    <option value="2">1+0</option>
-                                                    <option value="3">1+1</option>
-                                                    <option value="4">2+1</option>
-                                                    <option value="5">3+1</option>
-                                                    <option value="6">4+1</option>
-                                                    <option value="7">5+1</option>
-                                                    <option value="8">Dublex</option>
+                                                    <option value="">Seçiniz</option>
+                                                    <option value="Stüdyo">Stüdyo</option>
+                                                    <option value="1+0">1+0</option>
+                                                    <option value="1+1">1+1</option>
+                                                    <option value="2+1">2+1</option>
+                                                    <option value="3+1">3+1</option>
+                                                    <option value="4+1">4+1</option>
+                                                    <option value="5+1">5+1</option>
+                                                    <option value="Dublex">Dublex</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="bigitem" style="display:none">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="form-label"><strong>En:</strong></label>
+                                                    <input type="number" class="form-control" placeholder="cm" id="width">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label"><strong>Boy:</strong></label>
+                                                    <input type="number" class="form-control" placeholder="cm" id="length">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label"><strong>Yükseklik:</strong></label>
+                                                    <input type="number" class="form-control" placeholder="cm" id="height">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label"><strong>Ağırlık :</strong></label>
+                                                    <input type="number" class="form-control" placeholder="kg" id="weight">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6" id="extraservicevisibility">
                                             <div class="mb-3">
                                                 <div class="row">
                                                     <label for="progresspill-cstno-input"

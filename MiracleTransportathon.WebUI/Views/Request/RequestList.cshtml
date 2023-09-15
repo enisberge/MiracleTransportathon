@@ -2,10 +2,184 @@
     ViewData["Title"] = "Talepler";
     Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
 }
+@section Styles{
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
+
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+}
 @section Scripts{
     <script type="text/javascript">
         var recordtable;
         $(function () {
+
+            $("#requestTable tbody").on("click", "a#requestDetails", function () {
+                var id = parseInt($(this).attr("data-id"));
+                $('#details').modal('show');
+                $.ajax({
+                    url: '/Request/GetRequestById/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.isSuccess) {
+                            $("#name").text(data.request.name);
+                            $("#surname").text(data.request.surname);
+                            $("#phonenumber").text(data.request.phonenumber);
+                            $("#apartmenttype").text(data.request.apartmentType);
+                            $("#createddate").text(data.request.requestCreatedDate);
+                            $("#movingdate").text(data.request.movingDate);
+                            $("#originaddress").text(data.request.originCityName + ' - ' + data.request.originDistrictName + ' - ' + data.request.originLocalityName);
+                            $("#originaddressdetails").text(data.request.originAddress);
+                            $("#destinationaddress").text(data.request.destinationCityName + ' - ' + data.request.destinationDistrictName + ' - ' + data.request.destinationLocalityName);
+                            $("#destinationaddressdetails").text(data.request.destinationAddress);
+                            $("#description").text(data.request.requestDescription);
+                            var extraService = getExtraService(data.request.extraService);
+                            var originLift = data.request.originLift;
+
+                            if (originLift == 0) {
+                                $("#originlift").text("Var")
+                            }
+                            else{
+                                $("#originlift").text("Yok")
+                            }
+
+                            var destinationLift = data.request.destinationLift;
+
+                            if (destinationLift == 0) {
+                                $("#destinationlift").text("Var")
+                            }
+                            else {
+                                $("#destinationlift").text("Yok")
+                            }
+
+                            // extraservice divini seçin
+                            var $extraserviceDiv = $('#extraservice');
+                            $extraserviceDiv.empty();
+                            // Dizideki her öğeyi dönün ve div içine ekleyin
+                            extraService.forEach(function (service) {
+                                // Yeni bir <p> elementi oluşturun ve içeriğini dizi öğesi ile doldurun
+                                var $yeniParagraf = $('<p>').text('* ' + service);
+
+                                // Oluşturulan <p> elementini div içine ekleyin
+                                $extraserviceDiv.append($yeniParagraf);
+                            });
+
+                        } else {
+
+                            toastr.error("Veri alınamadı !");
+                        }
+                    },
+                    error: function () {
+                        // Hata durumunda işleme geçin
+                        toastr.error('İstek başarısız.');
+                    }
+                });
+            });
+
+            $("#requestTable tbody").on("click", "a#addOffer", function () {
+                var RequestId = parseInt($(this).attr("data-id"));
+                $('#giveOffer').modal('show');
+
+                $("#price").mask("#.##0,00 ₺", { reverse: true });
+                $.ajax({
+                    url: "/Vehicle/GetVehicleList", // Veri çekilecek URL
+                    type: "GET", // GET isteği
+                    dataType: "json", // Verinin JSON formatında olduğunu belirt
+                    success: function (data) { // İsteğin başarılı olduğunda çalışacak fonksiyon
+                        // 'data' içinde gelen veriye erişebilirsiniz.
+
+                        // 'data' içindeki veriyi 'id="vehicles"' olan select elementine doldur
+                        var selectElement = $("#vehicles");
+
+                        // Veriyi döngü ile gezerek seçenekleri ekleyin
+                        $.each(data, function (index, item) {
+                            // Her bir veri öğesi için yeni bir <option> elementi oluşturun
+                            var option = $("<option>")
+                                .attr("value", item.id) // Option'un değeri
+                                .text(item.brand + ' - ' + item.model + ' - ' + item.type + ' - ' + item.year + ' - ' + item.driverName); // Option'un görünen metni (örneğin, model adı)
+
+                            // Oluşturulan <option> elementini <select> içine ekleyin
+                            selectElement.append(option);
+                        });
+                    },
+                    error: function (error) { // İsteğin başarısız olduğunda çalışacak fonksiyon
+                        console.error("Hata oluştu: " + error.statusText);
+                    }
+                });
+                $('.btnSave').off('click').on('click', function () {
+
+                    var Price = $("#price").val();
+                    var StartDate = $("#startdate").val().trim();
+                    var EndDate = $("#enddate").val().trim();
+                    var VehicleId = parseInt($("#vehicles").val());
+                    var Description = $("#vehicles").val().trim();
+
+
+
+                    if (StartDate === "") {
+                        toastr.error("Yükleme tarihi boş geçilemez !");
+                        return false;
+                    }
+                    if (EndDate === "") {
+                        toastr.error("Varış tarihi boş geçilemez !");
+                        return false;
+                    }
+                    if (VehicleId == 0) {
+                        toastr.error("Araç bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    if (Description === "") {
+                        toastr.error("Açıklama bilgisi boş geçilemez !");
+                        return false;
+                    }
+                    var Price = $("#price").val();
+
+                    // Türk Lirası formatından temizlenmiş sayıyı elde edin (nokta ve virgülü kaldırın)
+                    Price = parseFloat(Price.replace(/[.,₺]/g, ""));
+
+                    StartDate = moment($("#startdate").val(), 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ss');
+                    EndDate = moment($("#enddate").val(), 'DD-MM-YYYY').format('YYYY-MM-DDTHH:mm:ss');
+
+                    var modelData = { StartDate, EndDate, VehicleId, Description, RequestId };
+                    $.ajax({
+                        type: "POST",
+                        url: "/Offer/AddOffer", // Controller ve Action adınıza göre ayarlayın
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(modelData),
+                        dataType: "json",
+                        success: function (result) {
+                            // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                            if (result.isSuccess) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Başarılı",
+                                    text: "Teklif Gönderildi !",
+                                }).then(function () {
+                                    // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                    $('#giveOffer').modal('hide');
+                                    recordtable.ajax.reload();
+                                });
+                            } else {
+                                toastr.error("Hata : Teklif gönderme işlemi başarısız !");
+                            }
+                        },
+                        error: function () {
+                            // Hata durumunda yapılacak işlemler
+                            toastr.error("Hata : Teklif gönderme işlemi başarısız !");
+                        }
+                    });
+
+                });
+            });
+
+
 
             $.ajax({
                 url: '/Request/GetRequestList', // Controller ve metot adını kullanarak uygun URL'yi oluşturun
@@ -26,16 +200,56 @@
                     "dataSrc": "" // Verilerinizi içeren JSON nesnesinin kökü (eğer JSON veri dizisi içinde ise boş bırakabilirsiniz)
                 },
                 "columns": [
-                    { "data": "type" },
-                    { "data": "originCityId" },
-                    { "data": "originDistrictId" },
-                    { "data": "originAddress" },
-                    { "data": "destinationCityId" },
-                    { "data": "destinationDistrictId" },
-                    { "data": "destinationAddress" },
-                    { "data": "apartmentType" },
-                    { "data": "movingDate" }
-                  
+                    { "data": "requestId", visible: false },
+                    {
+                        "data": "requestType", className: "text-center", render: function (data, type, row) {
+                            var html = "";
+                            if (data == 1) {
+                                html += '<span class="badge bg-primary">Evden Eve</span>';
+                            }
+                            else if (data == 2) {
+                                html += '<span class="badge bg-success">Ofis</span>';
+                            }
+                            else {
+                                html += '<span class="badge bg-warning text-dark">Büyük Eşya</span>';
+                            }
+                            return html;
+                        }
+                    },
+                    { "data": "originCityName" },
+                    { "data": "originDistrictName" },
+                    { "data": "originLocalityName" },
+                    { "data": "destinationCityName" },
+                    { "data": "destinationDistrictName" },
+                    { "data": "destinationLocalityName" },
+                    {
+                        "data": "movingDate", className: "text-center", render: function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "requestCreatedDate", className: "text-center", render: function (data, type, row) {
+                            if (data != null && data != "")
+                                return moment(data).format("DD.MM.YYYY");
+                            else
+                                return "";
+                        }
+                    },
+                    {
+                        "data": "offerCount", className: "text-center text-nowrap", render: function (data, type, row) {
+                            return "<a href='javascript:;'data-toggle='tooltip' data-placement='left' title='Teklifleri Görüntüle'><span class='badge bg-success'>" + (data) + "</span></a>";
+                        }
+                    },
+                    { "data": "requestStatus" },
+                    {
+                        "data": null, className: "text-center text-nowrap", render: function (data, type, row) {
+                            return "<a href='javascript:;'data-toggle='tooltip' data-id='" + row.requestId + "' id='addOffer' data-placement='left' title='Teklif Ver'><span  class='btn btn-secondary btn-sm'>Teklif Ver</span></a>&nbsp;<a href='javascript:;'data-toggle='tooltip' data-id='" + row.requestId + "' id='requestDetails' data-placement='left' title='Teklif Ver'><span  class='btn btn-warning btn-sm'>Detay Görüntüle</span></a>";
+                        }
+                    }
+
                 ]
             });
 
@@ -133,92 +347,166 @@
                 <table id="requestTable" class="table mb-0 datenew" style="width:100%">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Talep Türü</th>
                             <th>Yükleme İl</th>
                             <th>Yükleme İlçe</th>
-                            <th>Yükleme Adres</th>
+                            <th>Yükleme Semt</th>
                             <th>Varış İl</th>
                             <th>Varış İlçe</th>
-                            <th>Varış Adres</th>
-                            <th>Daire Tipi</th>
+                            <th>Varış Semt</th>
                             <th>Taşıma Tarihi</th>
+                            <th>Talep Tarihi</th>
+                            <th>Teklif Sayısı</th>
+                            <th>Talep Durum</th>
+                            <th>İşlemler</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
-                      
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="newRequest" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Kullanıcı Ekle</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Talep Detayları</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row" style="margin:3px">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Ad</label>
-                                <input type="text" id="name" class="form-control">
+                                <label><strong>Adı</strong></label>
+                                <label class="form-control" id="name"></label>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>Telefon Numarası</strong></label>
+                                <label class="form-control" id="phonenumber">05344276349</label>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>İlan Tarihi</strong></label>
+                                <label class="form-control" id="createddate">14.06.2023</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="ribbon-wrapper card">
+                                    <div class="card-body">
+                                        <div class="ribbon ribbon-secondary">Yükleme Noktası</div>
+                                        <div class="form-group">
+                                            <label><strong>İl / İlçe / Mahalle / Adres</strong></label>
+                                            <label id="originaddress">İstanbul</label>
+                                            <hr class="m-0" />
+                                            <label id="originaddressdetails">Adres</label>
+                                            <label><strong>Bina içi asansör :</strong> <span id="originlift"></span> </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label><strong>Açıklama</strong></label>
+                                <label class="form-control" id="description">Açıklama</label>
                             </div>
 
-                            <div class="form-group">
-                                <label>E-Posta</label>
-                                <input type="email" id="email" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Kullanıcı Adı</label>
-                                <input type="text" id="username" class="form-control">
-                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Soyad</label>
-                                <input type="text" id="surname" class="form-control">
+                                <label><strong>Soyadı</strong></label>
+                                <label class="form-control" id="surname"></label>
                             </div>
                             <div class="form-group">
-                                <label>Telefon</label>
-                                <input type="text" id="phone" class="form-control">
+                                <label><strong>Apartman Tipi</strong></label>
+                                <label class="form-control" id="apartmenttype">3 + 1</label>
                             </div>
                             <div class="form-group">
-                                <label>Parola</label>
-                                <input type="password" id="password" class="form-control">
+                                <label><strong>Taşıma Tarihi</strong></label>
+                                <label class="form-control" id="movingdate">14.06.2023</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="ribbon-wrapper card">
+                                    <div class="card-body">
+                                        <div class="ribbon ribbon-success">Varış Noktası</div>
+                                        <div class="form-group">
+                                            <label><strong>İl / İlçe / Mahalle / Adres</strong></label>
+                                            <label id="destinationaddress">İstanbul</label>
+                                            <hr class="m-0" />
+                                            <label id="destinationaddressdetails">Adres</label>
+                                            <label><strong>Bina içi asansör :</strong> <span id="destinationlift"></span> </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label><strong>Extra Servis</strong></label>
+                                <div class="form-control" id="extraservice"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content:end">
+                    <button type="button" class="btn btn-secondary btnClose" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="giveOffer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Teklif Ver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin:3px">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Yükleme Tarihi</label>
+                                <div class="form-group">
+                                    <div class="input-groupicon">
+                                        <input type="text" id="startdate" placeholder="DD-MM-YYYY" class="datetimepicker">
+                                        <div class="addonset">
+                                            <img src="~/admindashboard/assets/img/icons/calendars.svg" alt="img">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Araç</label>
+                                <select class="select" id="vehicles">
+                                    <option value="0">Seçiniz</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Varış Tarihi</label>
+                                <div class="form-group">
+                                    <div class="input-groupicon">
+                                        <input type="text" id="enddate" placeholder="DD-MM-YYYY" class="datetimepicker">
+                                        <div class="addonset">
+                                            <img src="~/admindashboard/assets/img/icons/calendars.svg" alt="img">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fiyat</label>
+                                <input type="text" id="price" class="form-control">
                             </div>
 
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Adresi</label>
-                                <textarea class="form-control" id="address" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <label for="description">Açıklama</label>
+                                <textarea class="form-control" id="description" rows="3"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Rol</label>
-                                <select class="form-select" id="role" aria-label="Default select example">
-                                    <option value="0" selected>Seçiniz</option>
-                                    <option value="1">Kullanıcı</option>
-                                    <option value="2">Taşıyıcı</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Durum</label>
-                                <div class="form-check">
-
-                                    <input class="form-check-input" id="status" type="checkbox" value="" checked>
-                                    <label class="form-check-label" for="status">
-                                        Aktif / Pasif
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
                 </div>

@@ -1,5 +1,6 @@
 ﻿using MiracleTransportathon.BusinessLayer.Abstract;
 using MiracleTransportathon.DataAccesLayer.Abstract;
+using MiracleTransportathon.DtoLayer.Dtos.RequestDto;
 using MiracleTransportathon.EntityLayer.Concrete;
 
 namespace MiracleTransportathon.BusinessLayer.Concrete
@@ -11,6 +12,16 @@ namespace MiracleTransportathon.BusinessLayer.Concrete
         public RequestManager(IRequestDal requestDal)
         {
             _requestDal = requestDal;
+        }
+
+        public List<RequestListDto> GetAllRequest()
+        {
+          return _requestDal.GetAllRequest();
+        }
+
+        public RequestListDto GetRequestById(int id)
+        {
+           return _requestDal.GetRequestById(id);
         }
 
         public void TAdd(Request entity)

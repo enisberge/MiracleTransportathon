@@ -64,6 +64,8 @@ namespace MiracleTransportathon.WebUI.Controllers
             return Json(new { isSuccess = false });
 
         }
+
+        
         [HttpGet]
         public async Task<IActionResult> GetUserById(int id)
         {

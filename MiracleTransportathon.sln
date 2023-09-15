@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList", "ToDoList", "{42C64F9C-5886-4D78-86F2-973D0F9860F5}"
 	ProjectSection(SolutionItems) = preProject
 		Adimlar.txt = Adimlar.txt
+		MiracleTransportathon.WebUI\Program.cs = MiracleTransportathon.WebUI\Program.cs
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiracleTransportathon.DataAccesLayer", "MiracleTransportathon.DataAccesLayer\MiracleTransportathon.DataAccesLayer.csproj", "{05A39E22-B537-4D0D-A149-2892896995D9}"
@@ -22,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiracleTransportathon.WebAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiracleTransportathon.WebUI", "MiracleTransportathon.WebUI\MiracleTransportathon.WebUI.csproj", "{0773BA1D-2068-438F-AB6D-53793B55CB85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiracleTransportathon.DtoLayer", "MiracleTransportathon.DtoLayer\MiracleTransportathon.DtoLayer.csproj", "{9743CFE3-617E-49E6-A38A-71D0896050DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiracleTransportathon.DtoLayer", "MiracleTransportathon.DtoLayer\MiracleTransportathon.DtoLayer.csproj", "{9743CFE3-617E-49E6-A38A-71D0896050DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

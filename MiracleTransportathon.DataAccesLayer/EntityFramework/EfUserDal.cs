@@ -24,25 +24,37 @@ namespace EnisBlog.DataAccessLayer.EntityFramework
             }
         }
 
+        public void RegisterUser(User user)
+        {
+            using (var context = new Context())
+            {
+                 context.Users.Add(user);
+                context.SaveChanges();
+            }
+        }
+
+
         public void UpdateUser(User user)
         {
-            var context = new Context();
-            var existingUser = context.Users.Find(user.Id);
-
-            if (existingUser != null)
+            using (var context = new Context())
             {
-                // Değiştirilmesini istediğiniz sütunları atan
-                existingUser.Name = user.Name;
-                existingUser.Surname= user.Surname;
-                existingUser.Email = user.Email;
-                existingUser.Username= user.Username;
-                existingUser.Password= user.Password;
-                existingUser.Address= user.Address;
-                existingUser.Status= user.Status;
-                existingUser.PhoneNumber= user.PhoneNumber;
-                existingUser.Role= user.Role;
+                var existingUser = context.Users.Find(user.Id);
 
-                context.SaveChanges();
+                if (existingUser != null)
+                {
+                    // Değiştirilmesini istediğiniz sütunları atan
+                    existingUser.Name = user.Name;
+                    existingUser.Surname = user.Surname;
+                    existingUser.Email = user.Email;
+                    existingUser.UserName = user.UserName;
+                    existingUser.PasswordHash = user.PasswordHash;
+                    existingUser.Address = user.Address;
+                    existingUser.Status = user.Status;
+                    existingUser.PhoneNumber = user.PhoneNumber;
+                    //existingUser.Role = user.Role;
+
+                    context.SaveChanges();
+                }
             }
         }
     }

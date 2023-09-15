@@ -18,7 +18,7 @@
         public int DestinationDistrictId { get; set; }
         public int DestinationLocalityId { get; set; }
         public string DestinationAddress { get; set; }
-
+        public string BigItemDetails { get; set; }
         public string ApartmentType { get; set; }
 
         public string ExtraService { get; set; }
