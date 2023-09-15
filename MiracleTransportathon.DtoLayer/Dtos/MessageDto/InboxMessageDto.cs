@@ -4,22 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiracleTransportathon.EntityLayer.Concrete
+namespace MiracleTransportathon.DtoLayer.Dtos.MessageDto
 {
-    public class Message
+    public class InboxMessageDto
     {
-        public int Id { get; set; }      
-            
+        public int Id { get; set; }
         public string MessageDetails { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } 
         public int IsRead { get; set; }
         public int IsDeleted { get; set; }
 
         // İlişki tanımlamaları
         public int SenderId { get; set; }//mesajı gönderen kişi
-        public User Sender { get; set; }
-        public int ReceiverId { get; set; } //mesajı alan kişi
-        public User Receiver { get; set; }
+        public int ReceiverId { get; set; }
 
     }
 }

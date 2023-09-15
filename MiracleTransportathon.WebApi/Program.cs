@@ -17,6 +17,9 @@ builder.Services.AddScoped<IRequestDal, EfRequestDal>();
 builder.Services.AddScoped<IRequestService, RequestManager>();
 builder.Services.AddScoped<ICompanyDal, EfCompanyDal>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
+builder.Services.AddScoped<ICompanyDal, EfCompanyDal>();
+builder.Services.AddScoped<IMessageDal, EfMessageDal>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
 
 
 //builder.Services.AddScoped
@@ -49,6 +52,10 @@ if (app.Environment.IsDevelopment())
 app.UseCors("MiracleTransportathon");
 app.UseAuthorization();
 
+
+
 app.MapControllers();
 
 app.Run();
+
+
