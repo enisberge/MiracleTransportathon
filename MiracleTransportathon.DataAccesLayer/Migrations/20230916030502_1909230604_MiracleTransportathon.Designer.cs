@@ -12,8 +12,8 @@ using MiracleTransportathon.DataAccesLayer.Concrete;
 namespace MiracleTransportathon.DataAccesLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230915125437_Identitiy_mg1")]
-    partial class Identitiy_mg1
+    [Migration("20230916030502_1909230604_MiracleTransportathon")]
+    partial class _1909230604_MiracleTransportathon
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,14 +167,13 @@ namespace MiracleTransportathon.DataAccesLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
+                    b.Property<int?>("Type")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("WebSite")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

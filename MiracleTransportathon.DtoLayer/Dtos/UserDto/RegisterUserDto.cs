@@ -9,6 +9,7 @@ namespace MiracleTransportathon.DtoLayer.Dtos.UserDto
 {
     public class RegisterUserDto
     {
+        public int Id { get; set; }
         //public int Id { get; set; }
         [Display(Name = "Ad")]
         [Required(ErrorMessage = "Ad bilgisi boş geçilemez !")]
@@ -36,6 +37,8 @@ namespace MiracleTransportathon.DtoLayer.Dtos.UserDto
         [Display(Name = "Telefon Numarası")]
         [Required(ErrorMessage = "Telefon bilgisi boş geçilemez !")]
         public string PhoneNumber { get; set; }
+        public int Role { get; set; }
+        public string CompanyName { get; set; }
 
         public DateTime CreatedDate { get; set; }=DateTime.Now;
     }

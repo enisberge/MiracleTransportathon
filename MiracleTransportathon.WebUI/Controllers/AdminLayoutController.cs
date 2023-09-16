@@ -1,9 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MiracleTransportathon.WebUI.Helper;
 
 namespace MiracleTransportathon.WebUI.Controllers
 {
     public class AdminLayoutController : Controller
     {
+        private readonly UserHelper _userHelper;
+
+        public AdminLayoutController(UserHelper userHelper)
+        {
+            _userHelper = userHelper;
+        }
         public IActionResult _AdminLayout()
         {
             return View();
@@ -19,7 +26,8 @@ namespace MiracleTransportathon.WebUI.Controllers
         }
         public PartialViewResult NavHeaderPartial()
         {
-            return PartialView();
+            ViewBag.UserRole = _userHelper.GetCurrentRole();
+            return PartialView(ViewBag);
         }
         public PartialViewResult SideBarPartial()
         {

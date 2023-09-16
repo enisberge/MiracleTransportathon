@@ -13,63 +13,66 @@
     <link href="~/admindashboard/assets/fonts/icomoon/style.css" rel="stylesheet" />
     <link href="~/admindashboard/assets/css/accountstyle.css" rel="stylesheet" />
     <link href="~/admindashboard/assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/plugins/toastr/toatr.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <!-- Style -->
     <link href="~/admindashboard/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
 
-    <title>Login #2</title>
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+    <title>Giriş Yap</title>
 </head>
 <body>
 
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-4">
+                    <h2 class="text-center mb-4">Giriş Yap</h2>
 
-    <div class="d-lg-flex half">
-        <div class="bg order-1 order-md-2" style="background-image:url(../../wwwroot/AdminDashboard/assets/img/bg_1.jpg) "></div>
-        <div class="contents order-2 order-md-1">
-
-            <div class="container">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-7 mt-3 mb-3">
-                        <h3 style="text-align:center"><strong>Giriş Yap</strong></h3>
-                          
-                            <div class="form-group first">
-                                <label for="name">Kullanıcı Adı</label>
-                                <input type="text" class="form-control" style="height:40px" placeholder="" id="username">
-                            </div>
-
-                            <div class="form-group last mb-3">
-                                <label for="password">Parola</label>
-                                <input type="password" class="form-control" style="height:40px" id="password">
-                            </div>
-                        
-                            <div class="form-group">
-                                <input value="Kaydet" id="btnSave" class="btn btn-block btn-primary float-end btn-sm">
-                            </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-control" id="username" placeholder="Kullanıcı Adı">
                     </div>
-                </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Parola</label>
+                        <input type="password" class="form-control" id="password" placeholder="Parola">
+                    </div>
+
+                <input value="Kaydet" id="btnSave" class="btn btn-block btn-primary float-end btn-sm">
             </div>
         </div>
-
-
     </div>
 
 
 
+
     <script src="~/admindashboard/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="js/popper.min.js"></script>
+    <script src="~/admindashboard/assets/js/popper.js"></script>
     <script src="~/admindashboard/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/admindashboard/assets/js/main.js"></script>
+    <script src="~/admindashboard/assets/plugins/toastr/toastr.min.js"></script>
+    <script src="~/admindashboard/assets/plugins/toastr/toastr.js"></script>
     <script type="text/javascript">
         $(function () {
 
             $("#btnSave").click(function () {
 
-              
+
                 var UserName = $("#username").val();
                 var Password = $("#password").val();
-              
 
-                var formData = {UserName, Password};
-              
+
+                var formData = { UserName, Password };
+
                 // Radio buton seçimini al
 
 
@@ -82,7 +85,11 @@
                         // Başarılı yanıt geldiğinde yapılacak işlemler
                         if (result.isSuccess) {
                             // Başarılı olduğunda yönlendirme yapabilirsiniz
-                            window.location.href = "/Request/RequestList";
+                            toastr.success("Giriş başarılı yönlendiriliyorsunuz!");
+                            setTimeout(function () {
+                                window.location.href = "/Request/RequestList";
+                            }, 3000);
+                         
                         } else {
                             // Başarısız olduğunda uygun bir işlem yapabilirsiniz
                             console.error(result.message);

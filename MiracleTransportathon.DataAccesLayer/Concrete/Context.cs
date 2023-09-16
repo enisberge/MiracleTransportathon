@@ -33,7 +33,16 @@ namespace MiracleTransportathon.DataAccesLayer.Concrete
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Company>()
+            .Property(c => c.WebSite)
+            .IsRequired(false);
+
+            modelBuilder.Entity<Company>()
+           .Property(c => c.Type)
+           .IsRequired(false);
+            modelBuilder.Entity<Company>()
+          .Property(c => c.Address)
+          .IsRequired(false);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentMessages)

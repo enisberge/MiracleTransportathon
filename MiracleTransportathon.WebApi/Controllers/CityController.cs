@@ -12,7 +12,7 @@ namespace MiracleTransportathon.WebApi.Controllers
     public class CityController : ControllerBase
     {
         private readonly ICityService _cityService;
-        private readonly IMapper _mapper;
+            private readonly IMapper _mapper;
 
         public CityController(ICityService cityService, IMapper mapper)
         {

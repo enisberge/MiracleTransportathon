@@ -1,59 +1,29 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MiracleTransportathon.BusinessLayer.Concrete;
 using MiracleTransportathon.DtoLayer.Dtos.LoginDto;
 using MiracleTransportathon.EntityLayer.Concrete;
+using MiracleTransportathon.WebUI.Helper;
 using System.Security.Claims;
-using MiracleTransportathon.WebApi.Helper;
-using System.Data;
 
-namespace MiracleTransportathon.WebApi.Controllers
+namespace MiracleTransportathon.WebUI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [AllowAnonymous]
-    public class LoginController : ControllerBase
+    public class SignInController : Controller
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly UserHelper _userHelper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public LoginController(SignInManager<User> signInManager, UserManager<User> userManager, UserHelper userHelper, IHttpContextAccessor httpContextAccessor)
+        public SignInController(SignInManager<User> signInManager, UserManager<User> userManager, UserHelper userHelper, IHttpContextAccessor httpContextAccessor)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _userHelper = userHelper;
-            _httpContextAccessor= httpContextAccessor;
-
+            _httpContextAccessor = httpContextAccessor;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Login(UserLoginDto model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
-
-        //        if (result.Succeeded)
-        //        {
-        //            // Giriş başarılı, kullanıcıyı ana sayfaya yönlendirin veya istediğiniz sayfaya yönlendirin
-        //            return Ok(result);
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
-        //        }
-        //    }
-
-        //    return Ok();
         //}
         [HttpPost]
-        public async Task<IActionResult> Login(UserLoginDto model)
+        public async Task<IActionResult> SignIn([FromBody]UserLoginDto model)
         {
             if (ModelState.IsValid)
             {
@@ -64,12 +34,14 @@ namespace MiracleTransportathon.WebApi.Controllers
                     // Kullanıcı başarılı bir şekilde oturum açtığında claims ekleyebilirsiniz.
                     var user = await _userManager.FindByNameAsync(model.UserName);
                     if (user != null)
-                    { string id = user.Id.ToString  ();
+                    {
+                        string id = user.Id.ToString();
                         var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.NameIdentifier, id),
+                    new Claim(ClaimTypes.Surname,user.Surname),
 
 
                     // İhtiyaca göre diğer claims'leri ekleyebilirsiniz.
@@ -86,20 +58,27 @@ namespace MiracleTransportathon.WebApi.Controllers
                         _httpContextAccessor.HttpContext.Session.SetString("UserRole", userRole);
 
                         var userid = _userHelper.GetCurrentUserId();
+                        // HttpContext.SignInAsync() ile claims ekleyerek oturum açabilirsiniz.
+                        //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+
 
                         // Başarılı giriş durumunda ana sayfaya yönlendirin veya istediğiniz bir sayfaya veya işleme yönlendirin.
-                        return RedirectToAction("RequestList", "Request");
+                        return Json(new { isSuccess = true });
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
+                    return Json(new { isSuccess = false });
                 }
             }
 
             // Başarısız giriş durumunda tekrar giriş sayfasına yönlendirin ve hata mesajlarını gösterin.
-            return BadRequest(model);
+            return Json(new { isSuccess = false });
         }
-
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

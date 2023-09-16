@@ -10,6 +10,7 @@ using MiracleTransportathon.DataAccesLayer.Abstract;
 using MiracleTransportathon.DataAccesLayer.Concrete;
 using MiracleTransportathon.DataAccesLayer.EntityFramework;
 using MiracleTransportathon.EntityLayer.Concrete;
+using MiracleTransportathon.WebApi.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddScoped<ICityDal, EfCityDal>();
 builder.Services.AddScoped<ICityService, CityManager>();
 builder.Services.AddScoped<IOfferDal, EfOfferDal>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
-
+builder.Services.AddScoped<UserHelper>();
 
 
 builder.Services.AddIdentity<User, Role>()
@@ -50,12 +51,20 @@ builder.Services.AddCors(opt =>
             .AllowAnyMethod();
     });
 });
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(40); // Oturum zaman aþýmý
+    options.Cookie.HttpOnly = true;
+});
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>
                {
-                   options.LoginPath = "/account/Login/";
-                   options.LogoutPath = "/account/Login/";
-                   options.AccessDeniedPath = "/account/Login/";
+                   options.LoginPath = "/Home/Index/";
+                   options.LogoutPath = "/Home/Index/";
+                   options.AccessDeniedPath = "/Home/Index/";
+                   options.Cookie.Name = "MiracleTransportathon";
                });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

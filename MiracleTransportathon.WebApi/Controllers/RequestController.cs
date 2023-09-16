@@ -9,7 +9,6 @@ using MiracleTransportathon.EntityLayer.Concrete;
 
 namespace MiracleTransportathon.WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiracleTransportathon.DtoLayer.Dtos.RequestDto;
 using MiracleTransportathon.DtoLayer.Dtos.UserDto;
 using MiracleTransportathon.WebUI.Models.Request;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace MiracleTransportathon.WebUI.Controllers
 {
+    [Authorize]
     public class RequestController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;

@@ -10,129 +10,382 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-    <link href="~/admindashboard/assets/fonts/icomoon/style.css" rel="stylesheet" />
+    @*<link href="~/admindashboard/assets/fonts/icomoon/style.css" rel="stylesheet" />*@
     <link href="~/admindashboard/assets/css/accountstyle.css" rel="stylesheet" />
     <link href="~/admindashboard/assets/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/plugins/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/plugins/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/admindashboard/assets/plugins/toastr/toatr.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <!-- Style -->
     <link href="~/admindashboard/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
 
-    <title>Login #2</title>
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+    <title>Kayıt Ol</title>
 </head>
 <body>
-
-
-    <div class="d-lg-flex half">
-        <div class="bg order-1 order-md-2" style="background-image:url(../../wwwroot/AdminDashboard/assets/img/bg_1.jpg) "></div>
-        <div class="contents order-2 order-md-1">
-
+    <!-- Navbar-->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-7 mt-3 mb-3">
-                        <h3 style="text-align:center"><strong>Kayıt Ol</strong></h3>
-                        <form action="#" method="post">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="role" id="radio1" value="1" checked>
-                                <label class="form-check-label" for="radio1">Kullanıcı</label>
+                <!-- Navbar Brand -->
+                <a href="#" class="navbar-brand">
+                    <img src="~/AdminDashboard/assets/img/logo.png" alt="logo" width="150">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <div class="row py-5 mt-0 align-items-center">
+            <!-- For Demo Purpose -->
+            <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+                <img src="https://bootstrapious.com/i/snippets/sn-registeration/illustration.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
+                <h1>Kayıt Ol</h1>
+                <p class="font-italic text-muted mb-0">İster taşıyın, ister taşıtın.</p>
+                <p class="font-italic text-muted">
+
+
+                </p>
+            </div>
+
+            <!-- Registeration Form -->
+            <div class="col-md-7 col-lg-6 ml-auto">
+                <form action="#">
+                    <div class="row">
+                        <div class="row" style="padding-right:0px">
+                            <div class="col-md-6">
+                                <!-- First Name -->
+                                <div class="input-group col-lg-6 mb-4">
+                                    <div class="input-group mb-3">
+                                        <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-user text-muted"></i></span>
+                                        <input type="text" id="name" placeholder="Ad" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-right:0px">
+                                <div class="input-group col-lg-6 mb-4">
+                                    <div class="input-group mb-3">
+                                        <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-user text-muted"></i></span>
+                                        <input type="text" id="surname" placeholder="Soyad" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-check form-check-inline mr-0" style="float:right;margin-right: 0">
-                                <input class="form-check-input" type="radio" name="role" id="radio2" value="2">
-                                <label class="form-check-label" for="radio2">Taşıyıcı</label>
+                        </div>
+                        <!-- Email Address -->
+                        <div class="row" style="padding-right:0px">
+                            <div class="col-md-6">
+                                <div class="input-group col-lg-6 mb-4">
+                                    <div class="input-group mb-3">
+                                        <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"> <i class="fa fa-envelope text-muted"></i></span>
+                                        <input type="text" id="email" placeholder="E-posta" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group first">
-                                <label for="name">Adı</label>
-                                <input type="text" class="form-control" style="height:40px" placeholder="" id="name">
+                            <!-- Phone Number -->
+                            <div class="col-md-6" style="padding-right:0px">
+                                <div class="input-group col-lg-6 mb-4">
+                                    <div class="input-group mb-3">
+                                        <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm">  <i class="fa fa-phone-square text-muted"></i></span>
+                                        <input id="phonenumber" placeholder="Telefon" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group first">
-                                <label for="name">Soyadı</label>
-                                <input type="text" class="form-control" style="height:40px" placeholder="" id="surname">
-                            </div>
-                            <div class="form-group first">
-                                <label for="name">Kullanıcı Adı</label>
-                                <input type="text" class="form-control" style="height:40px" placeholder="" id="username">
-                            </div>
+                        </div>
 
-                            <div class="form-group last mb-3">
-                                <label for="password">Parola</label>
-                                <input type="password" class="form-control" style="height:40px" id="password">
+                        <!-- Job -->
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-user text-muted"></i></span>
+                                    <input type="text" id="username" placeholder="Kullanıcı Adı" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                </div>
                             </div>
-                            <div class="form-group last mb-3">
-                                <label for="password">Parola Tekrar</label>
-                                <input type="password" class="form-control" style="height:40px" id="repassword">
-                            </div>
-                            <div class="form-group first">
-                                <label for="name">E-Posta Adresi</label>
-                                <input type="text" class="form-control" style="height:40px" placeholder="" id="email">
-                            </div>
-                            <div class="form-group last mb-3">
-                                <label for="password">Telefon Numarası</label>
-                                <input type="text" class="form-control" style="height:40px" id="phonenumber">
-                            </div>
-                            <div class="form-group last mb-3">
-                                <label for="password">Şirket Adı</label>
-                                <input type="password" class="form-control" style="height:40px" id="companyname">
-                            </div>
-                            <div class="form-group">
-                                <label for="companyaddress">Şirket Adresi</label>
-                                <textarea class="form-control" id="companyaddress" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <input value="Kaydet" id="btnSave" class="btn btn-block btn-primary float-end btn-sm">
-                            </div>
+                        </div>
 
-                        </form>
+                        <!-- Password -->
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"> <i class="fa fa-lock text-muted"></i></span>
+                                    <input type="password" id="password" placeholder="Parola" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Password Confirmation -->
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"> <i class="fa fa-lock text-muted"></i></span>
+                                    <input type="password" id="repassword" placeholder="Parola Tekrar" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-12 mb-4">
+                            <div class="input-group col-lg-6">
+                                <div class="col-md-4">&nbsp;</div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="user" value="1" checked>
+                                        <label class="form-check-label" for="user">Kullanıcı</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline mr-0" style="float:right;margin-right: 0">
+                                        <input class="form-check-input" type="radio" name="role" id="carrier" value="2">
+                                        <label class="form-check-label" for="carrier">Taşıyıcı</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">&nbsp;</div>
+
+
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-12 mb-4" id="companyinfo" style="display:none">
+                            <div class="input-group col-lg-6">
+                                <div class="input-group mb-3">
+                                    <span style="background-color:white" class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-industry text-muted" aria-hidden="true"></i></span>
+                                    <input type="text" id="companyname" placeholder="Şirket Adı" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="form-group col-lg-12 mx-auto mb-0">
+                            <a href="#" id="btnSave" class="btn btn-primary btn-block py-2 float-end">
+                                <span class="font-weight-bold">Hesap Oluştur</span>
+                            </a>
+                        </div>
+
+                        <!-- Divider Text -->
+                        <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+                            <div class="border-bottom w-100 ml-5"></div>
+                            <span class="px-2 small text-muted font-weight-bold text-muted">VEYA</span>
+                            <div class="border-bottom w-100 mr-5"></div>
+                        </div>
+
+
+                        <!-- Already Registered -->
+                        <div class="text-center w-100">
+                            <p class="text-muted font-weight-bold">Hesabınız var mı? <a href="/Account/Login" class="text-primary ml-2">Giriş Yap</a></p>
+                        </div>
+
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-
-
     </div>
 
 
+    @*<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2" style="background-image:url(../../wwwroot/AdminDashboard/assets/img/bg_1.jpg) "></div>
+    <div class="contents order-2 order-md-1">
+
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col-md-7 mt-3 mb-3">
+    <h3 style="text-align:center"><strong>Kayıt Ol</strong></h3>
+
+
+    <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="role" id="radio1" value="1" checked>
+    <label class="form-check-label" for="radio1">Kullanıcı</label>
+    </div>
+
+    <div class="form-check form-check-inline mr-0" style="float:right;margin-right: 0">
+    <input class="form-check-input" type="radio" name="role" id="radio2" value="2">
+    <label class="form-check-label" for="radio2">Taşıyıcı</label>
+    </div>
+    <div class="form-group first">
+    <label for="name">Adı</label>
+    <input type="text" class="form-control" style="height:40px" placeholder="" id="name">
+    </div>
+    <div class="form-group first">
+    <label for="name">Soyadı</label>
+    <input type="text" class="form-control" style="height:40px" placeholder="" id="surname">
+    </div>
+    <div class="form-group first">
+    <label for="name">Kullanıcı Adı</label>
+    <input type="text" class="form-control" style="height:40px" placeholder="" id="username">
+    </div>
+
+    <div class="form-group last mb-3">
+    <label for="password">Parola</label>
+    <input type="password" class="form-control" style="height:40px" id="password">
+    </div>
+    <div class="form-group last mb-3">
+    <label for="password">Parola Tekrar</label>
+    <input type="password" class="form-control" style="height:40px" id="repassword">
+    </div>
+    <div class="form-group first">
+    <label for="name">E-Posta Adresi</label>
+    <input type="text" class="form-control" style="height:40px" placeholder="" id="email">
+    </div>
+    <div class="form-group last mb-3">
+    <label for="password">Telefon Numarası</label>
+    <input type="text" class="form-control" style="height:40px" id="phonenumber">
+    </div>
+    <div class="form-group last mb-3">
+    <label for="password">Şirket Adı</label>
+    <input type="password" class="form-control" style="height:40px" id="companyname">
+    </div>
+    <div class="form-group">
+    <label for="companyaddress">Şirket Adresi</label>
+    <textarea class="form-control" id="companyaddress" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+    <input value="Kaydet" id="btnSave" class="btn btn-block btn-primary float-end btn-sm">
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    </div>*@
+
 
     <script src="~/admindashboard/assets/js/jquery-3.6.0.min.js"></script>
-    <script src="js/popper.min.js"></script>
+    <script src="~/admindashboard/assets/js/popper.js"></script>
     <script src="~/admindashboard/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/admindashboard/assets/js/main.js"></script>
+    <script src="~/admindashboard/assets/plugins/toastr/toastr.min.js"></script>
+    <script src="~/admindashboard/assets/plugins/toastr/toastr.js"></script>
+    <script src="~/admindashboard/assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="~/admindashboard/assets/plugins/sweetalert/sweetalerts.min.js"></script>
+    <script src="~/js/scripts.js"></script>
     <script type="text/javascript">
         $(function () {
-            
-            $("#btnSave").click(function(){
 
-                var Role = $("input[name='role']:checked").val();
+            $('input[name="role"]').change(function () {
+                // Seçilen radio düğmesinin değerini alın
+                var roletype = $('input[name="role"]:checked').val();
+
+                // Eğer değer 3 ise "apartmenttypevisibility" divini gizle, aksi halde göster
+                if (roletype === '2') {
+                    $('#companyinfo').css("display", "block");
+
+                } else {
+                    $("#companyinfo").css("display", "none");
+
+                }
+            });
+            $('#phonenumber').on('input', function () {
+                // Sadece rakam karakterlerini koru ve 10 karakter sınırlamasını uygula
+                var inputVal = this.value.replace(/\D/g, '').substr(0, 10);
+
+                // Telefon numarasını belirli bir biçimde görüntüle
+                if (inputVal.length >= 1) {
+                    inputVal = '(' + inputVal;
+                }
+                if (inputVal.length >= 4) {
+                    inputVal = inputVal.substr(0, 4) + ') ' + inputVal.substr(4);
+                }
+                if (inputVal.length >= 9) {
+                    inputVal = inputVal.substr(0, 9) + '-' + inputVal.substr(9);
+                }
+
+                this.value = inputVal;
+            });
+            $("#btnSave").click(function () {
+
+                var Role =parseInt($("input[name='role']:checked").val());
 
                 // Diğer form alanlarının değerlerini almak
-                var Name = $("#name").val();
-                var Surname = $("#surname").val();
-                var UserName = $("#username").val();
-                var Password = $("#password").val();
-                var ConfirmPassword = $("#repassword").val();
-                var Email = $("#email").val();
-                var PhoneNumber = $("#phonenumber").val();
-                var companyname = $("#companyname").val();
-                var companyaddress = $("#companyaddress").val();
+                var Name = $("#name").val().trim();
+                var Surname = $("#surname").val().trim();
+                var UserName = $("#username").val().trim();
+                var Password = $("#password").val().trim();
+                var ConfirmPassword = $("#repassword").val().trim();
+                var Email = $("#email").val().trim();
+                var PhoneNumber = $("#phonenumber").val().trim();
+                var CompanyName = $("#companyname").val().trim();
 
-                var formData = { Name, Surname, UserName, Password, Email, PhoneNumber,ConfirmPassword };
-                formData.Role = $("input[name='role']:checked").val();
+
+                if (Name === "") {
+                    toastr.error("Ad bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (Surname === "") {
+                    toastr.error("Soyad bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (UserName === "") {
+                    toastr.error("Kullanıcı adı bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (Password === "") {
+                    toastr.error("Parola bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (ConfirmPassword === "") {
+                    toastr.error("Parola tekrar bilgisi boş geçilemez !");
+                    return false;
+                }
+
+                if (Password != ConfirmPassword) {
+                    toastr.error("Parolalar eşleşmiyor!");
+                    return false;
+                }
+        
+                //if (!Regex.IsMatch(password, regex)) {
+                //    toastr.error("Parola en az 8 karakter uzunluğunda, en az bir büyük harf, en az bir küçük harf ve bir özel karakter içermelidir !");
+                //    return false;
+                //}
+                if (!regexPattern.test(Password)) {
+                    toastr.error("Parola en az 8 karakter uzunluğunda, en az bir büyük harf, en az bir küçük harf ve bir özel karakter içermelidir !");
+                    return false;
+                } 
+                if (Email === "") {
+                    toastr.error("Email bilgisi boş geçilemez !");
+                    return false;
+                }
+                if (PhoneNumber === "") {
+                    toastr.error("Telefon numarası bilgisi boş geçilemez !");
+                    return false;
+                }
+                var roletype = $('input[name="role"]:checked').val();
+                if (roletype == 2) {
+
+                    if (CompanyName === "") {
+                        toastr.error("Şirket adı bilgisi boş geçilemez !");
+                        return false;
+                    }
+                }
+
+                var formData = { Name, Surname, UserName, Password, Email, PhoneNumber, ConfirmPassword, Role, CompanyName };
 
                 // Radio buton seçimini al
 
 
                 $.ajax({
                     type: "POST",
-                    url: "/Home/RegisterUser", // ControllerAdi, bu metodu içeren controller'ın adını temsil eder
+                    url: "/Register/Register", // ControllerAdi, bu metodu içeren controller'ın adını temsil eder
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(formData),
                     success: function (result) {
                         // Başarılı yanıt geldiğinde yapılacak işlemler
-                        if (result.success) {
-                            // Başarılı olduğunda yönlendirme yapabilirsiniz
-                            window.location.href = "/Home/Index";
+                        if (result.isSuccess) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                text: 'Kayıt işlemi başarılı. Giriş sayfasına yönlendirileceksiniz.',
+                                showConfirmButton: false
+                            })
+                            setTimeout(function () {
+                                window.location.href = '/Account/Login';
+                            }, 3000);
                         } else {
-                            // Başarısız olduğunda uygun bir işlem yapabilirsiniz
-                            console.error(result.message);
+                            toastr.error("Kayıt işlemi başarısız !");
                         }
                     },
                     error: function (error) {
@@ -140,7 +393,7 @@
                         console.error("Hata oluştu: " + error.responseText);
                     }
                 });
-            
+
             });
 
         });

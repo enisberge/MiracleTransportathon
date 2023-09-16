@@ -14,14 +14,13 @@ namespace MiracleTransportathon.WebApi.Controllers
             _signInManager = signInManager;
         }
 
-        [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public  IActionResult Logout()
         {
-            await _signInManager.SignOutAsync(); // Oturumu kapat
-            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            _signInManager.SignOutAsync(); // Oturumu kapat
+            HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
-            return RedirectToAction("RequestList", "Request"); // Kullanıcıyı başka bir sayfaya yönlendir
+            return RedirectToAction("Login", "Account"); // Kullanıcıyı başka bir sayfaya yönlendir
         }
     }
 }
