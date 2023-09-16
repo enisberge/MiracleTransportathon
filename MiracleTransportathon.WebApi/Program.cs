@@ -24,6 +24,9 @@ builder.Services.AddScoped<IRequestDal, EfRequestDal>();
 builder.Services.AddScoped<IRequestService, RequestManager>();
 builder.Services.AddScoped<ICompanyDal, EfCompanyDal>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
+builder.Services.AddScoped<ICompanyDal, EfCompanyDal>();
+builder.Services.AddScoped<IMessageDal, EfMessageDal>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
 
 builder.Services.AddScoped<ICityDal, EfCityDal>();
 builder.Services.AddScoped<ICityService, CityManager>();
@@ -83,6 +86,10 @@ app.UseCors("MiracleTransportathon");
 app.UseAuthentication(); // Kimlik doðrulama middleware'ini etkinleþtirin
 app.UseAuthorization();
 
+
+
 app.MapControllers();
 
 app.Run();
+
+

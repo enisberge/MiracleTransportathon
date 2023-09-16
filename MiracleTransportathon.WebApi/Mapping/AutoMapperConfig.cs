@@ -2,6 +2,7 @@
 using MiracleTransportathon.DtoLayer.Dtos.CityDto;
 using MiracleTransportathon.DtoLayer.Dtos.OfferDto;
 using MiracleTransportathon.DtoLayer.Dtos.CompanyDto;
+using MiracleTransportathon.DtoLayer.Dtos.MessageDto;
 using MiracleTransportathon.DtoLayer.Dtos.RequestDto;
 using MiracleTransportathon.DtoLayer.Dtos.UserDto;
 using MiracleTransportathon.DtoLayer.Dtos.VehicleDto;
@@ -38,6 +39,9 @@ namespace MiracleTransportathon.WebApi.Mapping
             CreateMap<CompanyAddDto, Company>().ReverseMap();
             CreateMap<CompanyDeleteDto, Company>().ReverseMap();
             CreateMap<CompanyListDto, Company>().ReverseMap();
+
+            CreateMap<CreateMessageDto, Message>().ReverseMap();
+            CreateMap<InboxMessageDto, Message>().ReverseMap();
         }
     }
 }

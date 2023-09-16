@@ -1,0 +1,331 @@
+﻿@using MiracleTransportathon.DtoLayer.Dtos.MessageDto;
+@* @using MiracleTransportathon.EntityLayer.Concrete; *@
+@model List<InboxMessageDto> 
+@* @model List<Message> *@
+@{
+    ViewData["Title"] = "Mesajlar";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+@section Styles{
+    <style>
+        .toast-error {
+            background-color: brown;
+            color: white;
+        }
+
+        .toast-success {
+            background-color: darkgreen;
+            color: white;
+        }
+    </style>
+}
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSend").click(function () {
+
+                var MessageDetails = $("#messagedetails").val();
+
+                var modelData = { MessageDetails };
+                $.ajax({
+                    type: "POST",
+                    url: "/Message/AddMessage", // Controller ve Action adınıza göre ayarlayın
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(modelData),
+                    dataType: "json",
+                    success: function (result) {
+                        // Başarılı bir şekilde sonuç alındığında yapılacak işlemler
+                        if (result.isSuccess) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Başarılı",
+                                text: "Mesaj gönderme işlemi başarıyla tamamlandı!",
+                            }).then(function () {
+                                // Başarılı mesaj gösterildikten sonra yönlendirme yapabilirsiniz
+                                window.location.href = "/Message/AddMessage";
+                            });
+                        } else {
+                            toastr.error("Hata : Mesaj gönderme işlemi başarısız !");
+                        }
+                    },
+                    error: function () {
+                        // Hata durumunda yapılacak işlemler
+                        toastr.error("Hata : Mesaj gönderme işlemi başarısız !");
+                    }
+                });
+            });
+        });
+
+    </script>
+
+}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="page-title">
+            <h4>Mesajlar</h4>
+        </div>
+        <div class="page-btn">
+            <a href="javascript:;" class="btn btn-added"><img src="~/admindashboard/assets/img/icons/plus.svg" alt="img">Ekle</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row chat-window">
+
+                <div class="col-lg-5 col-xl-4 chat-cont-left">
+                    <div class="card mb-sm-3 mb-md-0 contacts_card flex-fill">
+                        <div class="card-header chat-search">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="search_btn"><i class="fas fa-search"></i></span>
+                                </div>
+                                <input type="text" placeholder="Search" class="form-control search-chat rounded-pill">
+                            </div>
+                        </div>
+                       @*  <div class="card-body contacts_body chat-users-list chat-scroll">
+                            <a href="javascript:void(0);" class="media d-flex active">
+                                <div class="media-img-wrap flex-shrink-0">
+                                    <div class="avatar avatar-away">
+                                        <img src="assets/img/customer/customer1.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body flex-grow-1">
+                                    <div>
+                                        <div class="user-name">Jeffrey Akridge</div>
+                                        <div class="user-last-chat">Hey, How are you?</div>
+                                    </div>
+                                    <div>
+                                        <div class="last-chat-time">2 min</div>
+                                        <div class="badge badge-success badge-pill">15</div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="javascript:void(0);" class="media d-flex read-chat">
+                                <div class="media-img-wrap flex-shrink-0">
+                                    <div class="avatar avatar-online">
+                                        <img src="assets/img/customer/customer2.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body flex-grow-1">
+                                    <div>
+                                        <div class="user-name">Nancy Olson</div>
+                                        <div class="user-last-chat">I'll call you later </div>
+                                    </div>
+                                    <div>
+                                        <div class="last-chat-time">8:01 PM</div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="javascript:void(0);" class="media d-flex">
+                                <div class="media-img-wrap flex-shrink-0">
+                                    <div class="avatar avatar-away">
+                                        <img src="assets/img/customer/customer3.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body flex-grow-1">
+                                    <div>
+                                        <div class="user-name">Ramona Kingsley</div>
+                                        <div class="user-last-chat">Give me a full explanation about our project</div>
+                                    </div>
+                                    <div>
+                                        <div class="last-chat-time">7:30 PM</div>
+                                        <div class="badge badge-success badge-pill">3</div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="javascript:void(0);" class="media read-chat d-flex">
+                                <div class="media-img-wrap flex-shrink-0">
+                                    <div class="avatar avatar-online">
+                                        <img src="assets/img/customer/customer4.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body flex-grow-1">
+                                    <div>
+                                        <div class="user-name">Ricardo Lung</div>
+                                        <div class="user-last-chat">That's very good UI design</div>
+                                    </div>
+                                    <div>
+                                        <div class="last-chat-time">6:59 PM</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div> *@
+                    </div>
+                </div>
+
+
+                <div class="col-lg-7 col-xl-8 chat-cont-right">
+
+                    <div class="card mb-0">
+                        <div class="card-header msg_head">
+                            <div class="d-flex bd-highlight">
+                                <a id="back_user_list" href="javascript:void(0)" class="back-user-list">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                                <div class="img_cont">
+                                    <img class="rounded-circle user_img" src="assets/img/customer/profile2.jpg" alt="">
+                                </div>
+                                <div class="user_info">
+                                    <span><strong id="receiver_name">Jeffrey Akridge</strong></span>
+                                    <p class="mb-0">Mesajlar</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body msg_card_body chat-scroll">
+                            <ul class="list-unstyled">
+                                <li class="media sent d-flex">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="assets/img/customer/customer5.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                    <div class="media-body flex-grow-1">
+                                        <div class="msg-box">
+                                            <div>
+                                                <p>Hello. What can I do for you?</p>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:30 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="media received d-flex">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="assets/img/customer/profile2.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                    <div class="media-body flex-grow-1">
+                                        <div class="msg-box">
+                                            <div>
+                                                <p>I'm just looking around.</p>
+                                                <p>Will you tell me something about yourself?</p>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:35 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="msg-box">
+                                            <div>
+                                                <p>Are you there? That time!</p>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:40 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="msg-box">
+                                            <div>
+                                                <div class="chat-msg-attachments">
+                                                    <div class="chat-attachment">
+                                                        <img src="assets/img/product/product12.jpg" alt="Attachment">
+                                                        <a href="" class="chat-attach-download">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="chat-attachment">
+                                                        <img src="assets/img/product/product13.jpg" alt="Attachment">
+                                                        <a href="" class="chat-attach-download">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:41 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="media sent d-flex">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="assets/img/customer/customer5.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                    </div>
+                                    <div class="media-body flex-grow-1">
+                                        <div class="msg-box">
+                                            <div>
+                                                @* <p>Where?</p> *@
+                                                @* <p>@Model[0].MessageDetails</p> *@
+                                              @*   <p>@Model[0]?.MessageDetails</p> *@
+                                                @foreach (var item in Model)
+                                                {
+                                                    <p>@item.MessageDetails</p>
+                                                }
+                                                else
+                                                {
+                                                    <p>Veri bulunamadı.</p>
+                                                }
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:42 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="msg-box">
+                                            <div>
+                                                <p>OK, my name is Limingqiang. I like singing, playing basketballand so on.</p>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:42 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="msg-box">
+                                            <div>
+                                                <div class="chat-msg-attachments">
+                                                    <div class="chat-attachment">
+                                                        <img src="assets/img/product/product15.jpg" alt="Attachment">
+                                                        <a href="" class="chat-attach-download">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <ul class="chat-msg-info">
+                                                    <li>
+                                                        <div class="chat-time">
+                                                            <span>8:50 AM</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <div class="input-group">
+                                <input class="form-control type_msg mh-auto empty_check" id="messagedetails" placeholder="Mesajınızı buraya yazabilirsiniz...">
+                                <button class="btn btn-primary btn_send" id="btnSend"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

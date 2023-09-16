@@ -9,5 +9,7 @@ namespace MiracleTransportathon.BusinessLayer.Abstract
 {
     public interface IMessageService : IGenericService<Message>
     {
+        //void DeleteMessage(int id);
+        //void TUpdateMessage(Message message);
     }
 }
